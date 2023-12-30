@@ -1,0 +1,51 @@
+﻿@page "/patient/{patientId:int}"
+@using DottoressaIorio.App.Models
+@using DottoressaIorio.App.Services
+@inject PatientService PatientService
+@inject NavigationManager NavigationManager
+
+<h3>Patient Details</h3>
+
+@if (patient == null)
+{
+    <p>Invalid patient ID or patient not found.</p>
+}
+else
+{
+    <div>
+        <p><strong>Title:</strong> @patient.Title</p>
+        <p><strong>First Name:</strong> @patient.FirstName</p>
+        <p><strong>Last Name:</strong> @patient.LastName</p>
+        <p><strong>Date of Birth:</strong> @patient.DateOfBirth.ToShortDateString()</p>
+        <p><strong>Place of Birth:</strong> @patient.PlaceOfBirth</p>
+        <p><strong>Gender:</strong> @patient.Gender</p>
+        <p><strong>Phone Number:</strong> @patient.PhoneNumber</p>
+        <p><strong>Email:</strong> @patient.Email</p>
+        <button class="btn btn-danger" @onclick="DeletePatient">Delete Patient</button>
+        <button class="btn btn-warning" @onclick="EditPatient">Modifica</button>
+
+        <a class="btn btn-primary" href="/patients">Torna Indietro</a>
+    </div>
+}
+
+@code {
+    private Patient patient;
+
+    [Parameter] public int PatientId { get; set; }
+
+    protected override void OnInitialized()
+    {
+        patient = PatientService.GetPatientById(PatientId);
+    }
+    private void DeletePatient()
+    {
+        if (patient == null) return;
+        PatientService.DeletePatient(patient.PatientId);
+        NavigationManager.NavigateTo("/patients");
+    }
+    private void EditPatient()
+    {
+        if (patient == null) return; 
+        NavigationManager.NavigateTo($"/edit-patient/{patient.PatientId}");
+    }
+}

@@ -1,0 +1,114 @@
+﻿@page "/patients"
+@using DottoressaIorio.App.Models
+@using DottoressaIorio.App.Services
+@inject PatientService PatientService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Pazienti</PageTitle>
+<h1>Pazienti</h1>
+
+<form @onsubmit="NavigateToAddPatient">
+    <button type="submit" class="btn btn-success">Aggiungi</button>
+</form>
+
+@if (patients == null || patients.Count == 0)
+{
+    <p>No patients available.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var patient in displayedPatients)
+            {
+                <tr>
+                    <td>@patient.Title</td>
+                    <td>@patient.FirstName</td>
+                    <td>@patient.LastName</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => ViewPatientDetails(patient.PatientId)">View</button>
+                        <button class="btn btn-danger" @onclick="() => DeletePatient(patient.PatientId)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <nav aria-label="Patients Pagination">
+        <ul class="pagination">
+            <li class="page-item" @onclick="PreviousPage" disabled="@IsFirstPage">
+                <a class="page-link" href="#" @onclick:preventDefault>Previous</a>
+            </li>
+            <li class="page-item">
+                <span class="page-link">Page @currentPage of @totalPages</span>
+            </li>
+            <li class="page-item" @onclick="NextPage" disabled="@IsLastPage">
+                <a class="page-link" href="#" @onclick:preventDefault>Next</a>
+            </li>
+        </ul>
+    </nav>
+    <form @onsubmit="NavigateToAddPatient">
+        <button type="submit" class="btn btn-success">Aggiungi</button>
+    </form>
+}
+
+
+@code {
+    List<Patient> patients;
+    private List<Patient> displayedPatients;
+    private int pageSize = 5; // Number of patients per page
+    private int currentPage = 1;
+    private int totalPages => (int)Math.Ceiling((double)patients.Count / pageSize);
+    private bool IsFirstPage => currentPage == 1;
+    private bool IsLastPage => currentPage == totalPages;
+
+
+    protected override void OnInitialized()
+    {
+        patients = PatientService.GetPatients();
+        UpdateDisplayedPatients();
+    }
+    private void UpdateDisplayedPatients()
+    {
+        int startIndex = (currentPage - 1) * pageSize;
+        displayedPatients = patients.Skip(startIndex).Take(pageSize).ToList();
+    }
+    private void PreviousPage()
+    {
+        if (!IsFirstPage)
+        {
+            currentPage--;
+            UpdateDisplayedPatients();
+        }
+    }
+
+    private void NextPage()
+    {
+        if (!IsLastPage)
+        {
+            currentPage++;
+            UpdateDisplayedPatients();
+        }
+    }
+    private void ViewPatientDetails(int patientId)
+    {
+        NavigationManager.NavigateTo($"/patient/{patientId}");
+    }
+    private void NavigateToAddPatient()
+    {
+        NavigationManager.NavigateTo("/addpatient");
+    }
+    private void DeletePatient(int patientId)
+    {
+        PatientService.DeletePatient(patientId);
+        patients = PatientService.GetPatients(); 
+        UpdateDisplayedPatients();
+    }
+}

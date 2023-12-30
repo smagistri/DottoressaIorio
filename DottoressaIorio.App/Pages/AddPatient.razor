@@ -1,0 +1,57 @@
+﻿@page "/addpatient"
+@using DottoressaIorio.App.Models
+@using DottoressaIorio.App.Services
+@inject PatientService PatientService
+@inject NavigationManager NavigationManager 
+
+<PageTitle>Nuovo Paziente</PageTitle>
+<h1>Nuovo Paziente</h1>
+
+<form @onsubmit="Add">
+    <div class="form-group">
+        <label>Title:</label>
+        <input class="form-control" @bind="newPatient.Title" />
+    </div>
+    <div class="form-group">
+        <label>First Name:</label>
+        <input class="form-control" @bind="newPatient.FirstName" />
+    </div>
+    <div class="form-group">
+        <label>Last Name:</label>
+        <input class="form-control" @bind="newPatient.LastName" />
+    </div>
+    <div class="form-group">
+        <label>Date of Birth:</label>
+        <input type="date" class="form-control" @bind="newPatient.DateOfBirth" />
+    </div>
+    <div class="form-group">
+        <label>Place of Birth:</label>
+        <input class="form-control" @bind="newPatient.PlaceOfBirth" />
+    </div>
+    <div class="form-group">
+        <label>Gender:</label>
+        <input class="form-control" @bind="newPatient.Gender" />
+    </div>
+    <div class="form-group">
+        <label>Phone Number:</label>
+        <input class="form-control" @bind="newPatient.PhoneNumber" />
+    </div>
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="email" class="form-control" @bind="newPatient.Email" />
+    </div>
+    <!-- Add other patient properties as needed -->
+
+    <button type="submit" class="btn btn-success">Aggiungi</button>
+</form>
+
+@code {
+    Patient newPatient = new Patient();
+
+    private void Add()
+    {
+        PatientService.AddPatient(newPatient);
+        newPatient = new Patient(); // Clear the form
+        NavigationManager.NavigateTo("/patients"); // Redirect to the PatientsList page after adding a patient
+    }
+}
