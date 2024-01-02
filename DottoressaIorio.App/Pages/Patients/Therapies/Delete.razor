@@ -1,0 +1,32 @@
+﻿@page "/therapies/delete/{id:int}"
+@using DottoressaIorio.App.Models
+@using DottoressaIorio.App.Data 
+@inject ApplicationDbContext dbContext
+@inject NavigationManager navigationManager
+ 
+<PageTitle>Delete Therapy</PageTitle>
+<h1>Delete Therapy</h1>
+
+<p>Are you sure you want to delete this therapy?</p>
+
+<button class="btn btn-danger" @onclick="DeleteTherapy">Delete</button>
+<a class="btn btn-secondary" href="/patient/@therapy.PatientId">Cancel</a>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Therapy therapy;
+
+    protected override void OnInitialized()
+    {
+        therapy = dbContext.Therapies.FirstOrDefault(t => t.TherapyId == Id);
+    }
+
+    private async Task DeleteTherapy()
+    {
+        dbContext.Therapies.Remove(therapy);
+        await dbContext.SaveChangesAsync();
+        navigationManager.NavigateTo($"/patient/{therapy.PatientId}/");
+    }
+}

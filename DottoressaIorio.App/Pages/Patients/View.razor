@@ -1,0 +1,76 @@
+﻿@page "/patient/{patientId:int}"
+@using DottoressaIorio.App.Models
+@using DottoressaIorio.App.Data
+@inject ApplicationDbContext dbContext
+@inject NavigationManager navigationManager
+
+<h3>Patient Details</h3>
+
+@if (patient == null)
+{
+    <p>Invalid patient ID or patient not found.</p>
+}
+else
+{
+    <div>
+        <p><strong>Title:</strong> @patient.Title</p>
+        <p><strong>First Name:</strong> @patient.FirstName</p>
+        <p><strong>Last Name:</strong> @patient.LastName</p>
+        <p><strong>Date of Birth:</strong> @patient.DateOfBirth.ToShortDateString()</p>
+        <p><strong>Place of Birth:</strong> @patient.PlaceOfBirth</p>
+        <p><strong>Gender:</strong> @patient.Gender</p>
+        <p><strong>Phone Number:</strong> @patient.PhoneNumber</p>
+        <p><strong>Email:</strong> @patient.Email</p>
+    </div>
+
+    <h3>Therapies</h3>
+
+    <a class="btn btn-primary" href="/patients/edit/@PatientId/therapies/create">Create Therapy</a>
+    @if (therapies != null && therapies.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in therapies)
+                {
+                    <tr>
+                        <td>@t.Description</td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="() => NavigateToPrintTherapy(t.TherapyId)">Print</button>
+                            <button class="btn btn-danger" @onclick="() => NavigateToDeleteTherapy(t.TherapyId)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    private Patient patient;
+
+    [Parameter] public int PatientId { get; set; }
+    private List<Therapy> therapies;
+
+
+    protected override void OnInitialized()
+    {
+        patient = dbContext.Patients.FirstOrDefault(x => x.PatientId == PatientId);
+        therapies = dbContext.Therapies.Where(t => t.PatientId == PatientId).ToList();
+    }
+
+    private void NavigateToPrintTherapy(int id)
+    {
+        navigationManager.NavigateTo($"/therapies/print/{id}");
+    }
+
+    private void NavigateToDeleteTherapy(int id)
+    {
+        navigationManager.NavigateTo($"/therapies/delete/{id}");
+    }
+}

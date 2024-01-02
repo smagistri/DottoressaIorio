@@ -1,5 +1,4 @@
 using DottoressaIorio.App.Data;
-using DottoressaIorio.App.Services;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,9 +20,6 @@ builder.Services.AddServerSideBlazor();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
-
-builder.Services.AddScoped<PatientService>();
-builder.Services.AddScoped<TherapyService>(); 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

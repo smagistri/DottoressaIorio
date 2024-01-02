@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Patients\Therapies\Edit.razor" />
+    <Content Remove="Pages\Patients\Therapies\Index.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="InstallActions.bat" />
   </ItemGroup>
 
@@ -18,10 +23,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.25" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\Therapies\" />
   </ItemGroup>
 
 </Project>
