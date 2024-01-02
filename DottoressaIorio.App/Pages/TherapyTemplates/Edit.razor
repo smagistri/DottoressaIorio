@@ -1,0 +1,45 @@
+﻿<!-- Pages/therapytemplates/Edit.razor -->
+@page "/therapytemplates/edit/{id:int}"
+@using DottoressaIorio.App.Models
+@using DottoressaIorio.App.Data
+@inject ApplicationDbContext dbContext
+@inject NavigationManager navigationManager
+
+<PageTitle>Edit Therapy Template</PageTitle>
+<h1>Edit Therapy Template</h1> 
+
+<EditForm Model="@therapyTemplate" OnValidSubmit="@UpdateTemplate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="Title">Title:</label>
+        <InputText id="Title" @bind-Value="therapyTemplate.Title" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="Description">Description:</label>
+        <InputText id="Description" @bind-Value="therapyTemplate.Description" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private TherapyTemplate therapyTemplate;
+
+    protected override void OnInitialized()
+    {
+        therapyTemplate = dbContext.TherapyTemplates.Find(Id);
+    }
+
+    private async Task UpdateTemplate()
+    {
+        dbContext.TherapyTemplates.Update(therapyTemplate);
+        await dbContext.SaveChangesAsync();
+        navigationManager.NavigateTo("/therapytemplates");
+    }
+}

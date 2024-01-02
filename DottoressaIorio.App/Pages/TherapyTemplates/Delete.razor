@@ -1,0 +1,33 @@
+﻿<!-- Pages/TherapyTemplates/Delete.razor -->
+@page "/therapytemplates/delete/{id:int}"
+@using DottoressaIorio.App.Models
+@using DottoressaIorio.App.Data
+@inject ApplicationDbContext dbContext
+@inject NavigationManager navigationManager
+
+<PageTitle>Delete Therapy Template</PageTitle>
+<h1>Delete Therapy Template</h1> 
+
+<p>Are you sure you want to delete this therapy template?</p>
+
+<button class="btn btn-danger" @onclick="DeleteTemplate">Delete</button>
+<a class="btn btn-secondary" href="/therapytemplates">Cancel</a>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private TherapyTemplate therapyTemplate;
+
+    protected override void OnInitialized()
+    {
+        therapyTemplate = dbContext.TherapyTemplates.Find(Id);
+    }
+
+    private async Task DeleteTemplate()
+    {
+        dbContext.TherapyTemplates.Remove(therapyTemplate);
+        await dbContext.SaveChangesAsync();
+        navigationManager.NavigateTo("/therapytemplates");
+    }
+}

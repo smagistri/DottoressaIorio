@@ -1,0 +1,51 @@
+﻿<!-- Pages/TherapyTemplates/Index.razor -->
+@page "/therapytemplates"
+@using DottoressaIorio.App.Models
+@using DottoressaIorio.App.Data
+@inject ApplicationDbContext dbContext
+@inject NavigationManager navigationManager
+
+<PageTitle>Therapy Templates</PageTitle>
+<h1>Therapy Templates</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var template in therapyTemplates)
+    {
+        <tr>
+            <td>@template.Title</td>
+            <td>@template.Description</td>
+            <td>
+                <button class="btn btn-primary" @onclick="() => NavigateToEdit(template.Id)">Edit</button>
+                <button class="btn btn-danger" @onclick="() => NavigateToDelete(template.Id)">Delete</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    private List<TherapyTemplate> therapyTemplates;
+
+    protected override void OnInitialized()
+    {
+        therapyTemplates = dbContext.TherapyTemplates.ToList();
+    }
+
+    private void NavigateToEdit(int id)
+    {
+        navigationManager.NavigateTo($"/therapytemplates/edit/{id}");
+    }
+
+    private void NavigateToDelete(int id)
+    {
+        navigationManager.NavigateTo($"/therapytemplates/delete/{id}");
+    }
+}

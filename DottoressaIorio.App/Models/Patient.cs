@@ -12,4 +12,5 @@ public class Patient
     public string? PhoneNumber { get; set; }
     public string Email { get; set; }
     public List<Therapy> Therapies { get; set; }
-} 
+}
+

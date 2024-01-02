@@ -13,5 +13,4 @@ namespace DottoressaIorio.App.Models
         public int PatientId { get; set; }
         public Patient Patient { get; set; }
     }
-
 }
