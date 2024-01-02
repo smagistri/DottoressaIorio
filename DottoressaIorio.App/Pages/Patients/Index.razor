@@ -1,16 +1,13 @@
 ﻿@page "/patients"
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Services
-@inject PatientService PatientService
-@inject NavigationManager NavigationManager
+@using DottoressaIorio.App.Models 
+@using DottoressaIorio.App.Data
+@inject ApplicationDbContext dbContext
+@inject NavigationManager navigationManager
 
 <PageTitle>Pazienti</PageTitle>
 <h1>Pazienti</h1>
 
-<form @onsubmit="NavigateToAddPatient">
-    <button type="submit" class="btn btn-success">Aggiungi</button>
-</form>
-
+ 
 @if (patients == null || patients.Count == 0)
 {
     <p>No patients available.</p>
@@ -34,8 +31,10 @@ else
                     <td>@patient.FirstName</td>
                     <td>@patient.LastName</td>
                     <td>
-                        <button class="btn btn-primary" @onclick="() => ViewPatientDetails(patient.PatientId)">View</button>
-                        <button class="btn btn-danger" @onclick="() => DeletePatient(patient.PatientId)">Delete</button>
+                        <button class="btn btn-primary" @onclick="() => NavigateToEditPatient(patient.PatientId)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => NavigateToDeletePatient(patient.PatientId)">Delete</button> 
+
+
                     </td>
                 </tr>
             }
@@ -53,10 +52,7 @@ else
                 <a class="page-link" href="#" @onclick:preventDefault>Next</a>
             </li>
         </ul>
-    </nav>
-    <form @onsubmit="NavigateToAddPatient">
-        <button type="submit" class="btn btn-success">Aggiungi</button>
-    </form>
+    </nav> 
 }
 
 
@@ -72,7 +68,7 @@ else
 
     protected override void OnInitialized()
     {
-        patients = PatientService.GetPatients();
+        patients = dbContext.Patients.ToList();
         UpdateDisplayedPatients();
     }
     private void UpdateDisplayedPatients()
@@ -97,18 +93,12 @@ else
             UpdateDisplayedPatients();
         }
     }
-    private void ViewPatientDetails(int patientId)
+    private void NavigateToEditPatient(int patientId)
     {
-        NavigationManager.NavigateTo($"/patient/{patientId}");
+        navigationManager.NavigateTo($"/patients/edit/{patientId}");
     }
-    private void NavigateToAddPatient()
+    private void NavigateToDeletePatient(int id)
     {
-        NavigationManager.NavigateTo("/addpatient");
-    }
-    private void DeletePatient(int patientId)
-    {
-        PatientService.DeletePatient(patientId);
-        patients = PatientService.GetPatients(); 
-        UpdateDisplayedPatients();
+        navigationManager.NavigateTo($"/patients/delete/{id}");
     }
 }

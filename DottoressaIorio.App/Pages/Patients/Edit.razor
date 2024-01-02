@@ -1,11 +1,13 @@
-﻿@page "/edit-patient/{patientId:int}"
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Services
-@inject PatientService PatientService
-@inject NavigationManager NavigationManager 
+﻿@page "/patients/edit/{id:int}"
+@inject ApplicationDbContext dbContext
+@inject NavigationManager navigationManager
 
-<PageTitle>Aggiorna Paziente</PageTitle>
-<h1>Aggiorna Paziente</h1>
+@using DottoressaIorio.App.Models
+
+@using DottoressaIorio.App.Data 
+
+<PageTitle>Edit Patient</PageTitle>
+<h1>Edit Patient</h1>
 
 @if (patient == null)
 {
@@ -15,6 +17,7 @@ else
 {
     <EditForm Model="patient" OnValidSubmit="UpdatePatient">
         <DataAnnotationsValidator />
+        <ValidationSummary />
 
         <div class="form-group">
             <label for="Title">Title</label>
@@ -61,19 +64,20 @@ else
 }
 
 @code {
-    private Patient patient;
+    [Parameter]
+    public int Id { get; set; }
 
-    [Parameter] public int PatientId { get; set; }
+    private Patient patient;
 
     protected override void OnInitialized()
     {
-        patient = PatientService.GetPatientById(PatientId);
+        patient = dbContext.Patients.Find(Id);
     }
 
-    private void UpdatePatient()
+    private async Task UpdatePatient()
     {
-        // Perform any additional validation or processing if needed
-        PatientService.UpdatePatient(patient);
-        NavigationManager.NavigateTo("/patients");
+        dbContext.Patients.Update(patient);
+        await dbContext.SaveChangesAsync();
+        navigationManager.NavigateTo("/patients");
     }
 }

@@ -1,0 +1,33 @@
+﻿<!-- Pages/Patients/DeletePatient.razor -->
+@page "/patients/delete/{id:int}"
+@using DottoressaIorio.App.Models
+@using DottoressaIorio.App.Data
+@inject ApplicationDbContext dbContext
+@inject NavigationManager navigationManager
+
+<PageTitle>Delete Patient</PageTitle>
+<h1>Delete Patient</h1>
+
+<p>Are you sure you want to delete this patient?</p>
+
+<button class="btn btn-danger" @onclick="DeletePatient">Delete</button>
+<a class="btn btn-secondary" href="/patients">Cancel</a>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Patient patient;
+
+    protected override void OnInitialized()
+    {
+        patient = dbContext.Patients.Find(Id);
+    }
+
+    private async Task DeletePatient()
+    {
+        dbContext.Patients.Remove(patient);
+        await dbContext.SaveChangesAsync();
+        navigationManager.NavigateTo("/patients");
+    }
+}

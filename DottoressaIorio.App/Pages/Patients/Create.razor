@@ -1,0 +1,59 @@
+﻿@page "/patients/create"
+@using DottoressaIorio.App.Models
+@using DottoressaIorio.App.Data
+@inject ApplicationDbContext dbContext
+@inject NavigationManager navigationManager
+
+<PageTitle>Nuovo Paziente</PageTitle>
+<h1>Nuovo Paziente</h1>
+
+<EditForm Model="@model" OnValidSubmit="@CreatePatient">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <div class="form-group">
+        <label>Title:</label>
+        <input class="form-control" @bind="model.Title"/>
+    </div>
+    <div class="form-group">
+        <label>First Name:*</label>
+        <input class="form-control" @bind="model.FirstName"/>
+    </div>
+    <div class="form-group">
+        <label>Last Name:*</label>
+        <input class="form-control" @bind="model.LastName"/>
+    </div>
+    <div class="form-group">
+        <label>Date of Birth:*</label>
+        <input type="date" class="form-control" @bind="model.DateOfBirth"/>
+    </div>
+    <div class="form-group">
+        <label>Place of Birth:*</label>
+        <input class="form-control" @bind="model.PlaceOfBirth"/>
+    </div>
+    <div class="form-group">
+        <label>Gender:</label>
+        <input class="form-control" @bind="model.Gender"/>
+    </div>
+    <div class="form-group">
+        <label>Phone Number:</label>
+        <input class="form-control" @bind="model.PhoneNumber"/>
+    </div>
+    <div class="form-group">
+        <label>Email:*</label>
+        <input type="email" class="form-control" @bind="model.Email"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</EditForm>
+
+@code {
+    private readonly Patient model = new();
+
+    private async Task CreatePatient()
+    {
+        dbContext.Patients.Add(model);
+        await dbContext.SaveChangesAsync();
+        navigationManager.NavigateTo("/patients");
+    }
+
+}
