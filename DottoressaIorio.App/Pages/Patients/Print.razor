@@ -1,0 +1,28 @@
+﻿@page "/therapies/print/{Id:int}"
+@using DottoressaIorio.App.Services
+@using DottoressaIorio.App.Data
+@inject ApplicationDbContext dbContext
+@inject PdfService pdfService
+
+<embed src="@GetPdf()" visible="false" width="1500" height="2000" />
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    // string GetPdf()
+    // {
+    //     var therapy = dbContext.Therapies.FirstOrDefault(t => t.TherapyId == id);
+
+    //     if (therapy != null)
+    //     {
+    //         var pdfBytes = pdfService.GenerateTherapyPdf(therapy);
+
+    //         // Convert the PDF bytes to a Base64 string
+    //         var pdfBase64 = Convert.ToBase64String(pdfBytes);
+
+    //         // Open the PDF in a new tab
+    //         var jsCode = $"window.open('data:application/pdf;base64,{pdfBase64}', '_blank');";
+    //         await JSRuntime.InvokeVoidAsync("eval", jsCode);
+    //     }
+    // }
+}

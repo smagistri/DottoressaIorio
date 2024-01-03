@@ -1,10 +1,23 @@
 ﻿@page "/patient/{patientId:int}"
 @using DottoressaIorio.App.Models
+@using DottoressaIorio.App.Services
 @using DottoressaIorio.App.Data
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+@inject PdfService pdfService
 
 <h3>Patient Details</h3>
+<script>
+    function jsSaveAsFile(filename, byteBase64) {
+        var link = document.createElement('a');
+        link.download = filename;
+        link.href = "data:application/octet-stream;base64," + byteBase64;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
 
 @if (patient == null)
 {
@@ -13,14 +26,30 @@
 else
 {
     <div>
-        <p><strong>Title:</strong> @patient.Title</p>
-        <p><strong>First Name:</strong> @patient.FirstName</p>
-        <p><strong>Last Name:</strong> @patient.LastName</p>
-        <p><strong>Date of Birth:</strong> @patient.DateOfBirth.ToShortDateString()</p>
-        <p><strong>Place of Birth:</strong> @patient.PlaceOfBirth</p>
-        <p><strong>Gender:</strong> @patient.Gender</p>
-        <p><strong>Phone Number:</strong> @patient.PhoneNumber</p>
-        <p><strong>Email:</strong> @patient.Email</p>
+        <p>
+            <strong>Title:</strong> @patient.Title
+        </p>
+        <p>
+            <strong>First Name:</strong> @patient.FirstName
+        </p>
+        <p>
+            <strong>Last Name:</strong> @patient.LastName
+        </p>
+        <p>
+            <strong>Date of Birth:</strong> @patient.DateOfBirth.ToShortDateString()
+        </p>
+        <p>
+            <strong>Place of Birth:</strong> @patient.PlaceOfBirth
+        </p>
+        <p>
+            <strong>Gender:</strong> @patient.Gender
+        </p>
+        <p>
+            <strong>Phone Number:</strong> @patient.PhoneNumber
+        </p>
+        <p>
+            <strong>Email:</strong> @patient.Email
+        </p>
     </div>
 
     <h3>Therapies</h3>
@@ -30,26 +59,26 @@ else
     {
         <table class="table">
             <thead>
-                <tr>
-                    <th>Therapy Date</th>
-                    <th>Actions</th>
-                </tr>
+            <tr>
+                <th>Therapy Date</th>
+                <th>Actions</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var t in therapies)
-                {
-                    <tr>
-                        <td>
-                            <a href="/therapies/edit/@t.TherapyId">
-                                @t.CreatedDate.ToString("dd/MM/yyyy")
-                            </a>
-                        </td>
-                        <td>
-                            <button class="btn btn-primary" @onclick="() => NavigateToPrintTherapy(t.TherapyId)">Print</button>
-                            <button class="btn btn-danger" @onclick="() => NavigateToDeleteTherapy(t.TherapyId)">Delete</button>
-                        </td>
-                    </tr>
-                }
+            @foreach (var t in therapies)
+            {
+                <tr>
+                    <td>
+                        <a href="/therapies/edit/@t.TherapyId">
+                            @t.CreatedDate.ToString("dd/MM/yyyy")
+                        </a>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => NavigateToPrintTherapy(t.TherapyId)">Print</button>
+                        <button class="btn btn-danger" @onclick="() => NavigateToDeleteTherapy(t.TherapyId)">Delete</button>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     }
@@ -68,9 +97,21 @@ else
         therapies = dbContext.Therapies.Where(t => t.PatientId == PatientId).ToList();
     }
 
-    private void NavigateToPrintTherapy(int id)
+    private async Task NavigateToPrintTherapy(int id)
     {
-        navigationManager.NavigateTo($"/therapies/print/{id}");
+        var therapy = dbContext.Therapies.FirstOrDefault(t => t.TherapyId == id);
+
+        if (therapy != null)
+        {
+            var pdfBytes = pdfService.GenerateTherapyPdf(therapy);
+
+            // Convert the PDF bytes to a Base64 string
+            var pdfBase64 = Convert.ToBase64String(pdfBytes);
+
+            var filename = $"{patient.FirstName}_{patient.LastName}_{therapy.CreatedDate:yy_MM_dd}_{DateTime.Now.ToFileTimeUtc()}.pdf";
+            // Open the PDF in a new tab 
+            await jsRuntime.InvokeVoidAsync("jsSaveAsFile", filename, pdfBase64);
+        }
     }
 
     private void NavigateToDeleteTherapy(int id)

@@ -1,27 +1,39 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="Pages\Patients\Therapies\Index.razor" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Remove="Pages\Patients\Print.razor" />
+		<Content Remove="Pages\Patients\Therapies\Index.razor" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="InstallActions.bat" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="InstallActions.bat" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.25" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.25" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.25">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.25" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="DinkToPdf" Version="1.0.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.25" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.25" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.25">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.25" />
+		<PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="libwkhtmltox.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="libwkhtmltox.dll">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
 
 </Project>

@@ -1,18 +1,20 @@
+using DinkToPdf.Contracts;
+using DinkToPdf;
 using DottoressaIorio.App.Data;
-using Microsoft.AspNetCore.Authentication.Negotiate;
+using DottoressaIorio.App.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
-   .AddNegotiate();
+//// Add services to the container.
+//builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
+//   .AddNegotiate();
 
-builder.Services.AddAuthorization(options =>
-{
-    // By default, all incoming requests will be authorized according to the default policy.
-    options.FallbackPolicy = options.DefaultPolicy;
-});
+//builder.Services.AddAuthorization(options =>
+//{
+//    // By default, all incoming requests will be authorized according to the default policy.
+//    options.FallbackPolicy = options.DefaultPolicy;
+//});
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -20,6 +22,13 @@ builder.Services.AddServerSideBlazor();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
+
+// Register DinkToPdf converter
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
+// Register PdfService
+builder.Services.AddScoped<PdfService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,8 +45,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
