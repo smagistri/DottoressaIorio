@@ -8,8 +8,6 @@ namespace DottoressaIorio.App.Models
         public int TherapyId { get; set; }
         public DateTime CreatedDate { get; set; }
         public string Description { get; set; }
-        // ... other properties
-
         public int PatientId { get; set; }
         public Patient Patient { get; set; }
     }

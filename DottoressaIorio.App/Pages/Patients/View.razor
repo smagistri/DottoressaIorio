@@ -31,7 +31,7 @@ else
         <table class="table">
             <thead>
                 <tr>
-                    <th>Description</th>
+                    <th>Therapy Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -39,7 +39,11 @@ else
                 @foreach (var t in therapies)
                 {
                     <tr>
-                        <td>@t.Description</td>
+                        <td>
+                            <a href="/therapies/edit/@t.TherapyId">
+                                @t.CreatedDate.ToString("dd/MM/yyyy")
+                            </a>
+                        </td>
                         <td>
                             <button class="btn btn-primary" @onclick="() => NavigateToPrintTherapy(t.TherapyId)">Print</button>
                             <button class="btn btn-danger" @onclick="() => NavigateToDeleteTherapy(t.TherapyId)">Delete</button>

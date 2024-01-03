@@ -1,0 +1,40 @@
+﻿@page "/therapies/edit/{id:int}"
+@using DottoressaIorio.App.Models
+@using DottoressaIorio.App.Data
+@inject ApplicationDbContext dbContext
+@inject NavigationManager navigationManager
+
+<PageTitle>Edit Therapy</PageTitle>
+<h1>Edit Therapy</h1>
+
+<EditForm Model="@therapy" OnValidSubmit="@UpdateTherapy">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="Description">Description:</label>
+        <InputTextArea id="Description" @bind-Value="therapy.Description" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a class="btn btn-secondary" href="/patient/@therapy.PatientId">Cancel</a>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Therapy therapy;
+
+    protected override void OnInitialized()
+    {
+        therapy = dbContext.Therapies.First(t => t.TherapyId == Id);
+    }
+
+    private async Task UpdateTherapy()
+    {
+        dbContext.Therapies.Update(therapy);
+        await dbContext.SaveChangesAsync();
+        navigationManager.NavigateTo($"/patient/{therapy.PatientId}/");
+    }
+}

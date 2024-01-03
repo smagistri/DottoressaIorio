@@ -43,6 +43,7 @@
     private async Task CreateTherapy()
     {
         therapy.PatientId = Id;
+        therapy.CreatedDate = DateTime.Now;
         dbContext.Therapies.Add(therapy);
         await dbContext.SaveChangesAsync();
         navigationManager.NavigateTo($"/patient/{Id}/");
