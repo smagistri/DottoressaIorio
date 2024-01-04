@@ -8,32 +8,37 @@
 <h1>Patients</h1>
 
 
-@if (patients == null || patients.Count == 0)
+<div class="mb-3">
+    <label for="search" class="form-label">Search</label>
+    <input type="text" class="form-control" id="search" @bind="searchTerm" @oninput="SearchPatients"/>
+</div>
+
+@if (displayedPatients == null || displayedPatients.Count == 0)
 {
-    <p>No patients available.</p>
+    <p>No patients found.</p>
 }
 else
 {
     <table class="table">
         <thead>
-            <tr>
-                <th>Patient</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>Patient</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var patient in displayedPatients)
-            {
-                <tr>
-                    <td>
-                        <a href="/patient/@patient.PatientId">@patient.Title @patient.FirstName @patient.LastName</a>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary" @onclick="() => NavigateToEditPatient(patient.PatientId)">Edit</button>
-                        <button class="btn btn-danger" @onclick="() => NavigateToDeletePatient(patient.PatientId)">Delete</button>
-                    </td>
-                </tr>
-            }
+        @foreach (var patient in displayedPatients)
+        {
+            <tr>
+                <td>
+                    <a href="/patient/@patient.PatientId">@patient.Title @patient.FirstName @patient.LastName</a>
+                </td>
+                <td>
+                    <button class="btn btn-primary" @onclick="() => NavigateToEditPatient(patient.PatientId)">Edit</button>
+                    <button class="btn btn-danger" @onclick="() => NavigateToDeletePatient(patient.PatientId)">Delete</button>
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
     <nav aria-label="Patients Pagination">
@@ -55,23 +60,27 @@ else
 @code {
     List<Patient> patients;
     private List<Patient> displayedPatients;
-    private int pageSize = 5; // Number of patients per page
+    private List<Patient> filteredPatients;
+    private readonly int pageSize = 5; // Number of patients per page
     private int currentPage = 1;
-    private int totalPages => (int)Math.Ceiling((double)patients.Count / pageSize);
+    private int totalPages => (int)Math.Ceiling((double)filteredPatients.Count / pageSize);
     private bool IsFirstPage => currentPage == 1;
     private bool IsLastPage => currentPage == totalPages;
-
+    private string searchTerm = "";
 
     protected override void OnInitialized()
     {
         patients = dbContext.Patients.ToList();
         UpdateDisplayedPatients();
     }
+
     private void UpdateDisplayedPatients()
     {
-        int startIndex = (currentPage - 1) * pageSize;
-        displayedPatients = patients.Skip(startIndex).Take(pageSize).ToList();
+        FilterPatientsBySearchTerm();
+        var startIndex = (currentPage - 1) * pageSize;
+        displayedPatients = filteredPatients.Skip(startIndex).Take(pageSize).ToList();
     }
+
     private void PreviousPage()
     {
         if (!IsFirstPage)
@@ -89,12 +98,34 @@ else
             UpdateDisplayedPatients();
         }
     }
+
     private void NavigateToEditPatient(int patientId)
     {
         navigationManager.NavigateTo($"/patients/edit/{patientId}");
     }
+
     private void NavigateToDeletePatient(int id)
     {
         navigationManager.NavigateTo($"/patients/delete/{id}");
+    }
+
+    private void FilterPatientsBySearchTerm()
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            filteredPatients = patients;
+        }
+
+        searchTerm = searchTerm.ToLower();
+        filteredPatients = patients.Where(p =>
+            p.FirstName.ToLower().Contains(searchTerm) ||
+            p.LastName.ToLower().Contains(searchTerm)
+        ).ToList();
+    }
+
+    private void SearchPatients(ChangeEventArgs e)
+    {
+        searchTerm = e.Value.ToString();
+        UpdateDisplayedPatients();
     }
 }
