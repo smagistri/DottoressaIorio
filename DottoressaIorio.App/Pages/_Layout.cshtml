@@ -12,6 +12,16 @@
     <link href="css/site.css" rel="stylesheet" />
     <link href="DottoressaIorio.App.styles.css" rel="stylesheet" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+    <script>
+        window.jsSaveAsFile = (filename, byteBase64) => {
+        var link = document.createElement('a');
+        link.download = filename;
+        link.href = "data:application/octet-stream;base64," + byteBase64;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
 </head>
 <body>
     @RenderBody()

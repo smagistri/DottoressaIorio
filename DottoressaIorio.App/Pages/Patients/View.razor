@@ -7,17 +7,8 @@
 @inject IJSRuntime jsRuntime
 @inject PdfService pdfService
 
-<h3>Patient Details</h3>
-<script>
-    function jsSaveAsFile(filename, byteBase64) {
-        var link = document.createElement('a');
-        link.download = filename;
-        link.href = "data:application/octet-stream;base64," + byteBase64;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-</script>
+<PageTitle>Patient Details</PageTitle>
+<h1>Patient Details</h1>
 
 @if (patient == null)
 {
@@ -59,26 +50,26 @@ else
     {
         <table class="table">
             <thead>
-            <tr>
-                <th>Therapy Date</th>
-                <th>Actions</th>
-            </tr>
+                <tr>
+                    <th>Therapy Date</th>
+                    <th>Actions</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var t in therapies)
-            {
-                <tr>
-                    <td>
-                        <a href="/therapies/edit/@t.TherapyId">
-                            @t.CreatedDate.ToString("dd/MM/yyyy")
-                        </a>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary" @onclick="() => NavigateToPrintTherapy(t.TherapyId)">Print</button>
-                        <button class="btn btn-danger" @onclick="() => NavigateToDeleteTherapy(t.TherapyId)">Delete</button>
-                    </td>
-                </tr>
-            }
+                @foreach (var t in therapies)
+                {
+                    <tr>
+                        <td>
+                            <a href="/therapies/edit/@t.TherapyId">
+                                @t.CreatedDate.ToString("dd/MM/yyyy")
+                            </a>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="() => NavigateToPrintTherapy(t.TherapyId)">Print</button>
+                            <button class="btn btn-danger" @onclick="() => NavigateToDeleteTherapy(t.TherapyId)">Delete</button>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     }
@@ -109,7 +100,7 @@ else
             var pdfBase64 = Convert.ToBase64String(pdfBytes);
 
             var filename = $"{patient.FirstName}_{patient.LastName}_{therapy.CreatedDate:yy_MM_dd}_{DateTime.Now.ToFileTimeUtc()}.pdf";
-            // Open the PDF in a new tab 
+            // Open the PDF in a new tab
             await jsRuntime.InvokeVoidAsync("jsSaveAsFile", filename, pdfBase64);
         }
     }

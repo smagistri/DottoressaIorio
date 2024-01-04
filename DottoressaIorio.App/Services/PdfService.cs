@@ -37,7 +37,7 @@ public class PdfService
                 </div>  
                 <div class=""content"">
                     <h4>{therapy.CreatedDate:dd/MM/yyyy}</h4>
-                    <p>{therapy.Description}</p>
+                    <p>{therapy.Description.Replace("\n", "<br />")}</p>
                 </div>  
             </body>
         </html>";
@@ -63,17 +63,5 @@ public class PdfService
         });
 
         return pdf;
-    }
-
-    public static class FileUtil
-    {
-        public static async Task SaveAs(byte[] content, string fileName)
-        {
-            var memoryStream = new MemoryStream(content);
-            var stream = new FileStream(fileName, FileMode.Create);
-            await memoryStream.CopyToAsync(stream);
-            memoryStream.Close();
-            stream.Close();
-        }
     }
 }
