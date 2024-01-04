@@ -3,13 +3,13 @@
 @using DottoressaIorio.App.Data
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
- 
+
 <PageTitle>Create Therapy</PageTitle>
 <h1>Create Therapy</h1>
 
-<EditForm Model="@therapy" OnValidSubmit="@CreateTherapy">
-    <DataAnnotationsValidator/>
-    <ValidationSummary/>
+<EditForm Model="@model" OnValidSubmit="@CreateTherapy">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
     <div class="form-group">
         <label for="TemplateId">Template:</label>
@@ -23,7 +23,8 @@
     </div>
     <div class="form-group">
         <label for="Description">Description:</label>
-        <InputTextArea id="Description" @bind-Value="therapy.Description" class="form-control"/>
+        <InputTextArea id="Description" @bind-Value="model.Description" class="form-control" />
+        <ValidationMessage For="@(() => model.Description)" />
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
     <a class="btn btn-secondary" href="/patient/@Id">Cancel</a>
@@ -32,7 +33,7 @@
 @code {
     [Parameter]
     public int Id { get; set; }
-    private readonly Therapy therapy = new();
+    private readonly Therapy model = new();
     private List<TherapyTemplate> templates;
 
     protected override void OnInitialized()
@@ -42,9 +43,9 @@
 
     private async Task CreateTherapy()
     {
-        therapy.PatientId = Id;
-        therapy.CreatedDate = DateTime.Now;
-        dbContext.Therapies.Add(therapy);
+        model.PatientId = Id;
+        model.CreatedDate = DateTime.Now;
+        dbContext.Therapies.Add(model);
         await dbContext.SaveChangesAsync();
         navigationManager.NavigateTo($"/patient/{Id}/");
     }
@@ -52,6 +53,6 @@
     private void TemplateChange(ChangeEventArgs args)
     {
         var selected = templates.First(x => x.Id.ToString() == args.Value?.ToString());
-        therapy.Description = selected.Description;
+        model.Description = selected.Description;
     }
 }
