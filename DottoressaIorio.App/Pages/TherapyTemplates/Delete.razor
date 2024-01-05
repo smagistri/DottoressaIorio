@@ -1,5 +1,5 @@
-﻿<!-- Pages/TherapyTemplates/Delete.razor -->
-@page "/therapytemplates/delete/{id:int}"
+﻿<!-- Pages/therapy-templates/Delete.razor -->
+@page "/therapy-templates/delete/{id:int}"
 @using DottoressaIorio.App.Models
 @using DottoressaIorio.App.Data
 @inject ApplicationDbContext dbContext
@@ -11,7 +11,7 @@
 <p>Are you sure you want to delete this therapy template?</p>
 
 <button class="btn btn-danger" @onclick="DeleteTemplate">Delete</button>
-<a class="btn btn-secondary" href="/therapytemplates">Cancel</a>
+<a class="btn btn-secondary" href="/therapy-templates">Cancel</a>
 
 @code {
     [Parameter]
@@ -28,6 +28,6 @@
     {
         dbContext.TherapyTemplates.Remove(therapyTemplate);
         await dbContext.SaveChangesAsync();
-        navigationManager.NavigateTo("/therapytemplates");
+        navigationManager.NavigateTo("/therapy-templates");
     }
 }

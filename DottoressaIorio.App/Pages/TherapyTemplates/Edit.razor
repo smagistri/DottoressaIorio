@@ -1,5 +1,5 @@
-﻿<!-- Pages/therapytemplates/Edit.razor -->
-@page "/therapytemplates/edit/{id:int}"
+﻿<!-- Pages/therapy-templates/Edit.razor -->
+@page "/therapy-templates/edit/{id:int}"
 @using DottoressaIorio.App.Models
 @using DottoressaIorio.App.Data
 @inject ApplicationDbContext dbContext
@@ -42,6 +42,6 @@
     {
         dbContext.TherapyTemplates.Update(model);
         await dbContext.SaveChangesAsync();
-        navigationManager.NavigateTo("/therapytemplates");
+        navigationManager.NavigateTo("/therapy-templates");
     }
 }

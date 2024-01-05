@@ -1,40 +1,39 @@
-﻿<!-- Pages/TherapyTemplates/Create.razor -->
-@page "/therapytemplates/create"
+﻿@page "/therapy-templates/create"
 @using DottoressaIorio.App.Models
 @using DottoressaIorio.App.Data
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
- 
+
 <PageTitle>Create Therapy Template</PageTitle>
 <h1>Create Therapy Template</h1>
 
-
-<EditForm Model="@model" OnValidSubmit="@CreateTemplate">
+<EditForm Model="@model" OnValidSubmit="@CreateTemplate" class="needs-validation" novalidate>
     <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label for="Title">Title:</label>
-        <InputText id="Title" @bind-Value="model.Title" class="form-control" />
-        <ValidationMessage For="@(() => model.Title)" />
+    <div class="row g-3">
+        <div class="col-12">
+            <label for="Title" class="form-label">Title</label>
+            <InputText id="Title" @bind-Value="model.Title" class="form-control" />
+            <ValidationMessage For="@(() => model.Title)" />
+        </div>
     </div>
-
-    <div class="form-group">
-        <label for="Description">Description:</label>
-        <InputTextArea id="Description" @bind-Value="model.Description" class="form-control" />
-        <ValidationMessage For="@(() => model.Description)" />
+    <div class="row g-3">
+        <div class="col-12">
+            <label for="Description">Description</label>
+            <InputTextArea id="Description" @bind-Value="model.Description" class="form-control" row="10" />
+            <ValidationMessage For="@(() => model.Description)" />
+        </div>
     </div>
-
-    <button type="submit" class="btn btn-primary">Create</button>
+    <hr class="my-4">
+    <button type="submit" class="w-100 btn btn-primary btn-lg">Create</button>
 </EditForm>
 
 @code {
-    private TherapyTemplate model = new TherapyTemplate();
+    private TherapyTemplate model = new();
 
     private async Task CreateTemplate()
     {
         dbContext.TherapyTemplates.Add(model);
         await dbContext.SaveChangesAsync();
-        navigationManager.NavigateTo("/therapytemplates");
+        navigationManager.NavigateTo("/therapy-templates");
     }
 }

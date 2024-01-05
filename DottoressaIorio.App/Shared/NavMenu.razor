@@ -1,49 +1,41 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Dottoressa Iorio</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+﻿@inject IJSRuntime jsRuntime
+
+<nav id="sidebarMenu"
+     class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+    <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <NavLink class="nav-link" aria-current="page" href="" Match="NavLinkMatch.All">
+                    <span data-feather="home"></span> Home
+                </NavLink>
+            </li>
+            <li class="nav-item"> 
+                <NavLink class="nav-link" href="patients">
+                    <span data-feather="users"></span> Patients
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="patients/create">
+                    <span data-feather="plus-circle" aria-hidden="true"></span> Create Patient
+                </NavLink>
+            </li>
+            <li class="nav-item"> 
+                <NavLink class="nav-link" href="therapy-templates">
+                    <span data-feather="users"></span> Templates
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="therapy-templates/create">
+                    <span data-feather="plus-circle" aria-hidden="true"></span> Create Template
+                </NavLink>
+            </li>
+        </ul>
     </div>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="patients">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Patients
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="patients/create">
-                <span class="oi oi-plus" aria-hidden="true"></span> Create Patient
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="therapytemplates">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Templates
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="therapytemplates/create">
-                <span class="oi oi-plus" aria-hidden="true"></span> Create Template
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
+</nav>
 @code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        collapseNavMenu = !collapseNavMenu;
+        await jsRuntime.InvokeVoidAsync("jsLoadFeather");
     }
 }
+ 

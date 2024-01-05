@@ -45,4 +45,9 @@
 		</EmbeddedResource>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include="wwwroot\js\bootstrap\bootstrap.bundle.min.js" />
+	  <None Include="wwwroot\js\bootstrap\bootstrap.bundle.min.js.map" />
+	</ItemGroup>
+
 </Project>

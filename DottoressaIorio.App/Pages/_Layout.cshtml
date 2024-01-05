@@ -7,25 +7,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Stefano Magistri">
     <base href="~/" />
+    <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
-    <link href="DottoressaIorio.App.styles.css" rel="stylesheet" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
     <script>
-        window.jsSaveAsFile = (filename, byteBase64) => {
-            var link = document.createElement('a');
-            link.download = filename;
-            link.href = "data:application/pdf;base64," + byteBase64;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+        
     </script>
 </head>
 <body>
     @RenderBody()
-
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
             An error has occurred. This application may no longer respond until reloaded.
@@ -36,7 +29,12 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
-
     <script src="_framework/blazor.server.js"></script>
+    <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+        crossorigin="anonymous"></script>
+    <script src="js/site.js"></script>
 </body>
 </html>
