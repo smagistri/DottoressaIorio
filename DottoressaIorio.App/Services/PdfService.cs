@@ -24,8 +24,7 @@ public class PdfService
                 </style>
             </head>
             <body>
-                <div class=""content"">
-                    <h4>{therapy.CreatedDate:dd/MM/yyyy}</h4>
+                <div class=""content""> 
                     <p>{therapy.Description.Replace("\n", "<br />")}</p>
                 </div>  
             </body>
@@ -43,8 +42,8 @@ public class PdfService
             PagesCount = true,
             HtmlContent = htmlContent,
             WebSettings = { DefaultEncoding = "utf-8" },
-            HeaderSettings = { HtmUrl = "Services/PdfHeader.html", Spacing = 2 },
-            FooterSettings = { FontName = "Calibri", FontSize = 8, Right = "Pagina [page] di [toPage]", HtmUrl = "Services/PdfFooter.html", }
+            HeaderSettings = { FontName = "Calibri", FontSize = 12, Right = $"Data Terapia: {therapy.CreatedDate:dd/MM/yyyy}", Spacing = 15, HtmUrl = "Services/PdfHeader.html" },
+            FooterSettings = { FontName = "Calibri", FontSize = 8, Right = "Pagina [page] di [toPage]", HtmUrl = "Services/PdfFooter.html", Spacing = 10}
         };
 
         var pdf = _converter.Convert(new HtmlToPdfDocument
