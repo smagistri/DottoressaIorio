@@ -6,6 +6,7 @@
 
 <PageTitle>Pazienti</PageTitle>
 <h1>Pazienti</h1>
+<hr class="my-4">
 
 <div class="mb-3">
     <label for="search" class="form-label">Cerca il nome del paziente</label>
@@ -14,6 +15,7 @@
 
 @if (displayedPatients == null || displayedPatients.Count == 0)
 {
+    <hr class="my-4">
     <p>Nessun paziente trovato.</p>
 }
 else

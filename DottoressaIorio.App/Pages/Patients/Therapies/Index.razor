@@ -1,15 +1,15 @@
 ﻿@page "/patient/{patientId:int}/therapies"
+@using Microsoft.EntityFrameworkCore
 @using DottoressaIorio.App.Models
 @using DottoressaIorio.App.Services
 @using DottoressaIorio.App.Data
-@using Microsoft.EntityFrameworkCore
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
 @inject IJSRuntime jsRuntime
 @inject PdfService pdfService
 
 <PageTitle>@patient.Title @patient.FirstName @patient.LastName</PageTitle>
-    <h1>@patient.Title @patient.FirstName @patient.LastName</h1>
+<h1>@patient.Title @patient.FirstName @patient.LastName</h1>
 <hr class="my-4">
 
 @if (patient == null)
@@ -25,19 +25,19 @@ else
         <p>
             <strong>Email:</strong> <a href="mailto:@patient.Email">@patient.Email</a>
         </p>
-        @if (@patient.PlaceOfBirth != null)
+        @if (patient.PlaceOfBirth != null)
         {
             <p>
                 <strong>Luogo di Nascita:</strong> @patient.PlaceOfBirth
             </p>
         }
-        @if (@patient.Gender != null)
+        @if (patient.Gender != null)
         {
             <p>
                 <strong>Sesso:</strong> @patient.Gender
             </p>
         }
-        @if (@patient.PhoneNumber != null)
+        @if (patient.PhoneNumber != null)
         {
             <p>
                 <strong>Numero di telefono:</strong> <a href="tel:@patient.PhoneNumber">@patient.PhoneNumber</a>
@@ -54,26 +54,26 @@ else
         <hr class="my-4">
         <table class="table">
             <thead>
-                <tr>
-                    <th>Data inizio terapia</th>
-                    <th>Azioni</th>
-                </tr>
+            <tr>
+                <th>Data inizio terapia</th>
+                <th>Azioni</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var t in therapies)
-                {
-                    <tr>
-                        <td>
-                            <a href="/therapies/edit/@t.TherapyId">
-                                @t.CreatedDate.ToString("dd/MM/yyyy")
-                            </a>
-                        </td>
-                        <td>
-                            <button class="btn btn-primary" @onclick="() => NavigateToPrintTherapy(t.TherapyId)">Scarica</button>
-                            <button class="btn btn-danger" @onclick="() => NavigateToDeleteTherapy(t.TherapyId)">Rimuovi</button>
-                        </td>
-                    </tr>
-                }
+            @foreach (var t in therapies)
+            {
+                <tr>
+                    <td>
+                        <a href="/therapies/edit/@t.TherapyId">
+                            @t.CreatedDate.ToString("dd/MM/yyyy")
+                        </a>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => NavigateToPrintTherapy(t.TherapyId)">Scarica</button>
+                        <button class="btn btn-danger" @onclick="() => NavigateToDeleteTherapy(t.TherapyId)">Rimuovi</button>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     }
@@ -113,4 +113,5 @@ else
     {
         navigationManager.NavigateTo($"/therapies/delete/{id}");
     }
+
 }
