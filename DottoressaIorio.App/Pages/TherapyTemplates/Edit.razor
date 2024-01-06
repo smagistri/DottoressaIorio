@@ -13,13 +13,13 @@
     <ValidationSummary />
 
     <div class="form-group">
-        <label for="Title">Title:</label>
+        <label for="Title">Titolo:</label>
         <InputText id="Title" @bind-Value="model.Title" class="form-control" />
         <ValidationMessage For="@(() => model.Title)" />
     </div>
 
     <div class="form-group">
-        <label for="Description">Description:</label>
+        <label for="Description">Descrizione:</label>
         <InputTextArea id="Description" @bind-Value="model.Description" class="form-control" />
         <ValidationMessage For="@(() => model.Description)" />
     </div>
@@ -40,6 +40,7 @@
 
     private async Task UpdateTemplate()
     {
+        model.EditDate = DateTime.Now;
         dbContext.TherapyTemplates.Update(model);
         await dbContext.SaveChangesAsync();
         navigationManager.NavigateTo("/therapy-templates");

@@ -8,7 +8,7 @@
 @inject PdfService pdfService
 
 <PageTitle>Patient Details</PageTitle>
-<h1>Patient Details</h1>
+<h1>@patient.Title @patient.FirstName @patient.LastName</h1>
 
 @if (patient == null)
 {
@@ -18,29 +18,29 @@ else
 {
     <div>
         <p>
-            <strong>Title:</strong> @patient.Title
+            <strong>Data di Nascita:</strong> @patient.DateOfBirth?.ToShortDateString()
         </p>
         <p>
-            <strong>First Name:</strong> @patient.FirstName
+            <strong>Email:</strong> <a href="mailto:@patient.Email">@patient.Email</a>
         </p>
-        <p>
-            <strong>Last Name:</strong> @patient.LastName
-        </p>
-        <p>
-            <strong>Date of Birth:</strong> @patient.DateOfBirth.ToShortDateString()
-        </p>
-        <p>
-            <strong>Place of Birth:</strong> @patient.PlaceOfBirth
-        </p>
-        <p>
-            <strong>Gender:</strong> @patient.Gender
-        </p>
-        <p>
-            <strong>Phone Number:</strong> @patient.PhoneNumber
-        </p>
-        <p>
-            <strong>Email:</strong> @patient.Email
-        </p>
+        @if (@patient.PlaceOfBirth != null)
+        {
+            <p>
+                <strong>Luogo di Nascita:</strong> @patient.PlaceOfBirth
+            </p>
+        }
+        @if (@patient.Gender != null)
+        {
+            <p>
+                <strong>Sesso:</strong> @patient.Gender
+            </p>
+        }
+        @if (@patient.PhoneNumber != null)
+        {
+            <p>
+                <strong>Numero di telefono:</strong> <a href="tel:@patient.PhoneNumber">@patient.PhoneNumber</a>
+            </p>
+        }
     </div>
 
     <h3>Therapies</h3>

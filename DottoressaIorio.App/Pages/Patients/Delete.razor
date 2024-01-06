@@ -17,16 +17,18 @@
     [Parameter]
     public int Id { get; set; }
 
-    private Patient patient;
+    private Patient model;
 
     protected override void OnInitialized()
     {
-        patient = dbContext.Patients.Find(Id);
+        model = dbContext.Patients.Find(Id);
     }
 
     private async Task DeletePatient()
     {
-        dbContext.Patients.Remove(patient);
+        model.EditDate = DateTime.Now;
+        model.Deleted = true;
+        dbContext.Patients.Update(model);
         await dbContext.SaveChangesAsync();
         navigationManager.NavigateTo("/patients");
     }

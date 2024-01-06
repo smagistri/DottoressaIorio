@@ -17,16 +17,18 @@
     [Parameter]
     public int Id { get; set; }
 
-    private TherapyTemplate therapyTemplate;
+    private TherapyTemplate model;
 
     protected override void OnInitialized()
     {
-        therapyTemplate = dbContext.TherapyTemplates.Find(Id);
+        model = dbContext.TherapyTemplates.Find(Id);
     }
 
     private async Task DeleteTemplate()
     {
-        dbContext.TherapyTemplates.Remove(therapyTemplate);
+        model.EditDate = DateTime.Now;
+        model.Deleted = true;
+        dbContext.TherapyTemplates.Update(model);
         await dbContext.SaveChangesAsync();
         navigationManager.NavigateTo("/therapy-templates");
     }

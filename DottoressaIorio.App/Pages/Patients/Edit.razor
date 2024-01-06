@@ -53,12 +53,12 @@ else
 
         <div class="form-group">
             <label for="PhoneNumber">Phone Number</label>
-            <InputText id="PhoneNumber" @bind-Value="model.PhoneNumber" class="form-control" />
+            <input type="tel" id="PhoneNumber" class="form-control" @bind="model.PhoneNumber"> 
         </div>
 
         <div class="form-group">
-            <label for="Email">Email</label>
-            <InputText id="Email" @bind-Value="model.Email" class="form-control" />
+            <label for="Email">Email</label> 
+            <input type="email" id="Email" @bind="model.Email" class="form-control">
             <ValidationMessage For="@(() => model.Email)" />
         </div>
 
@@ -80,6 +80,7 @@ else
 
     private async Task UpdatePatient()
     {
+        model.EditDate = DateTime.Now;
         dbContext.Patients.Update(model);
         await dbContext.SaveChangesAsync();
         navigationManager.NavigateTo("/patients");

@@ -1,4 +1,4 @@
-﻿@page "/patients/create"
+﻿@page "/create-patient"
 @using DottoressaIorio.App.Models
 @using DottoressaIorio.App.Data
 @inject ApplicationDbContext dbContext
@@ -40,6 +40,7 @@
 
     private async Task CreatePatient()
     {
+        model.CreatedDate = DateTime.Now;
         dbContext.Patients.Add(model);
         await dbContext.SaveChangesAsync();
         navigationManager.NavigateTo($"/patient/{model.PatientId}");

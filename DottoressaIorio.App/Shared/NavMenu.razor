@@ -2,33 +2,36 @@
 
 <nav id="sidebarMenu"
      class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-    <div class="position-sticky pt-3">
+    <div class="position-sticky p-3">
         <ul class="nav flex-column">
             <li class="nav-item">
                 <NavLink class="nav-link" aria-current="page" href="" Match="NavLinkMatch.All">
                     <span data-feather="home"></span> Home
                 </NavLink>
             </li>
-            <li class="nav-item"> 
+            <li class="border-top my-1"></li>
+            <li class="nav-item">
                 <NavLink class="nav-link" href="patients">
-                    <span data-feather="users"></span> Patients
+                    <span data-feather="users"></span> Pazienti
                 </NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="patients/create">
-                    <span data-feather="plus-circle" aria-hidden="true"></span> Create Patient
+                <NavLink class="nav-link" href="create-patient">
+                    <span data-feather="plus-circle" aria-hidden="true"></span> Aggiungi Paziente
                 </NavLink>
             </li>
-            <li class="nav-item"> 
+            <li class="border-top my-1"></li>
+            <li class="nav-item">
                 <NavLink class="nav-link" href="therapy-templates">
-                    <span data-feather="users"></span> Templates
+                    <span data-feather="layers"></span> Terapie Precompilate
                 </NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="therapy-templates/create">
-                    <span data-feather="plus-circle" aria-hidden="true"></span> Create Template
+                <NavLink class="nav-link" href="create-therapy-template">
+                    <span data-feather="plus-circle" aria-hidden="true"></span> Aggiungi Precompilato
                 </NavLink>
             </li>
+            <li class="border-top my-1"></li>
         </ul>
     </div>
 </nav>
@@ -38,4 +41,4 @@
         await jsRuntime.InvokeVoidAsync("jsLoadFeather");
     }
 }
- 
+
