@@ -5,9 +5,9 @@ namespace DottoressaIorio.App.Models;
 public class TherapyTemplate
 {
     public int Id { get; set; }
-    [Required(ErrorMessage = "Title is required.")]
+    [Required(ErrorMessage = "Il titolo é richiesto.")]
     public string Title { get; set; }
-    [Required(ErrorMessage = "Description is required.")]
+    [Required(ErrorMessage = "La descrizione é richiesta.")]
     public string Description { get; set; }
     public DateTime? CreatedDate { get; set; }
     public DateTime? EditDate { get; set; }

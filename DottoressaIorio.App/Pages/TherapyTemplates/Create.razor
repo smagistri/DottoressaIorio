@@ -4,8 +4,8 @@
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
 
-<PageTitle>Create Therapy Template</PageTitle>
-<h1>Create Therapy Template</h1>
+<PageTitle>Aggiungi Terapia Precompilata</PageTitle>
+<h1>Aggiungi Terapia Precompilata</h1>
 
 <EditForm Model="@model" OnValidSubmit="@CreateTemplate" class="needs-validation" novalidate>
     <DataAnnotationsValidator />
@@ -24,7 +24,7 @@
         </div>
     </div>
     <hr class="my-4">
-    <button type="submit" class="w-100 btn btn-primary btn-lg">Create</button>
+    <button type="submit" class="w-100 btn btn-primary btn-lg">Salva</button>
 </EditForm>
 
 @code {

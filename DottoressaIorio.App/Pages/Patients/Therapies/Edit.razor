@@ -4,21 +4,22 @@
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
 
-<PageTitle>Edit Therapy</PageTitle>
-<h1>Edit Therapy</h1>
+<PageTitle>Modifica Terapia</PageTitle>
+<h1>Modifica Terapia</h1>
 
-<EditForm Model="@model" OnValidSubmit="@UpdateTherapy">
+<a href="/patient/@model.PatientId">Torna indietro</a>
+<hr class="my-4">
+<EditForm Model="@model" OnValidSubmit="@UpdateTherapy" class="needs-validation" novalidate>
     <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label for="Description">Description:</label>
-        <InputTextArea id="Description" @bind-Value="model.Description" class="form-control" />
-        <ValidationMessage For="@(() => model.Description)" />
+    <div class="row g-3">
+        <div class="col-12">
+            <label for="Description">Descrizione:</label>
+            <InputTextArea id="Description" @bind-Value="model.Description" class="form-control" />
+            <ValidationMessage For="@(() => model.Description)" />
+        </div>
     </div>
-
-    <button type="submit" class="btn btn-primary">Update</button>
-    <a class="btn btn-secondary" href="/patient/@model.PatientId">Cancel</a>
+    <hr class="my-4">
+    <button type="submit" class="w-100 btn btn-primary btn-lg">Salva</button>
 </EditForm>
 
 @code {

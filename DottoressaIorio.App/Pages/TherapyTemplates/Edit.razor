@@ -5,26 +5,27 @@
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
 
-<PageTitle>Edit Therapy Template</PageTitle>
-<h1>Edit Therapy Template</h1> 
+<PageTitle>Modifica Terapia Precompilata</PageTitle>
+<h1>Modifica Terapia Precompilata</h1>
 
-<EditForm Model="@model" OnValidSubmit="@UpdateTemplate">
+<EditForm Model="@model" OnValidSubmit="@UpdateTemplate" class="needs-validation" novalidate>
     <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label for="Title">Titolo:</label>
-        <InputText id="Title" @bind-Value="model.Title" class="form-control" />
-        <ValidationMessage For="@(() => model.Title)" />
+    <div class="row g-3">
+        <div class="col-12">
+            <label for="Title">Titolo:</label>
+            <InputText id="Title" @bind-Value="model.Title" class="form-control" />
+            <ValidationMessage For="@(() => model.Title)" />
+        </div>
     </div>
-
-    <div class="form-group">
-        <label for="Description">Descrizione:</label>
-        <InputTextArea id="Description" @bind-Value="model.Description" class="form-control" />
-        <ValidationMessage For="@(() => model.Description)" />
+    <div class="row g-3">
+        <div class="col-12">
+            <label for="Description">Descrizione:</label>
+            <InputTextArea id="Description" @bind-Value="model.Description" class="form-control" row="10" />
+            <ValidationMessage For="@(() => model.Description)" />
+        </div>
     </div>
-
-    <button type="submit" class="btn btn-primary">Update</button>
+    <hr class="my-4">
+    <button type="submit" class="w-100 btn btn-primary btn-lg">Salva</button>
 </EditForm>
 
 @code {

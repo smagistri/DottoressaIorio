@@ -4,30 +4,34 @@
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
 
-<PageTitle>Create Therapy</PageTitle>
-<h1>Create Therapy</h1>
+<PageTitle>Aggiungi Terapia</PageTitle>
+<h1>Aggiungi Terapia</h1>
 
+<a href="/patient/@Id">Torna indietro</a>
+<hr class="my-4">
 <EditForm Model="@model" OnValidSubmit="@CreateTherapy">
     <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label for="TemplateId">Template:</label>
-        <select id="TemplateId" @onchange="TemplateChange" class="form-control">
-            <option value="0">Please select...</option>
-            @foreach (var template in templates)
-            {
-                <option value="@template.Id">@template.Title</option>
-            }
-        </select>
+    <div class="row g-3">
+        <div class="col-12">
+            <label for="TemplateId">Precompilato:</label>
+            <select id="TemplateId" @onchange="TemplateChange" class="form-control">
+                <option value="0">Seleziona...</option>
+                @foreach (var template in templates)
+                {
+                    <option value="@template.Id">@template.Title</option>
+                }
+            </select>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="Description">Description:</label>
-        <InputTextArea id="Description" @bind-Value="model.Description" class="form-control" />
-        <ValidationMessage For="@(() => model.Description)" />
+    <div class="row g-3">
+        <div class="col-12">
+            <label for="Description">Descrizione:</label>
+            <InputTextArea id="Description" @bind-Value="model.Description" class="form-control" />
+            <ValidationMessage For="@(() => model.Description)" />
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a class="btn btn-secondary" href="/patient/@Id">Cancel</a>
+    <hr class="my-4">
+    <button type="submit" class="w-100 btn btn-primary btn-lg">Salva</button>
 </EditForm>
 
 @code {
@@ -52,7 +56,8 @@
 
     private void TemplateChange(ChangeEventArgs args)
     {
-        var selected = templates.First(x => x.Id.ToString() == args.Value?.ToString());
+        var id = (int)(args.Value ?? 0);
+        var selected = templates.Find(x => x.Id == id);
         model.Description = selected.Description;
     }
 }
