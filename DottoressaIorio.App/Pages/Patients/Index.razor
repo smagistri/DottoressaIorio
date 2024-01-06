@@ -39,7 +39,7 @@ else
                             @patient.DateOfBirth?.ToString("dd/MM/yyyy")
                         </td>
                         <td>
-                            @patient.CreatedDate?.ToString("dd/MM/yyyy")
+                            @patient.CreatedDate.ToString("dd/MM/yyyy")
                         </td>
                         <td>
                             <button class="btn btn-primary" @onclick="() => NavigateToEditPatient(patient.PatientId)">Modifica</button>

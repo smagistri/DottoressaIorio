@@ -20,7 +20,7 @@ public class Patient
     [EmailAddress(ErrorMessage = "Invalid Email Address.")]
     public string Email { get; set; }
     public List<Therapy> Therapies { get; set; }
-    public DateTime? CreatedDate { get; set; }
+    public DateTime CreatedDate { get; set; }
     public DateTime? EditDate { get; set; }
     public bool Deleted { get; set; }
 }
