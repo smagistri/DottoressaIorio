@@ -5,13 +5,13 @@
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
 
-<PageTitle>Rimuovi Patient</PageTitle>
-<h1>Rimuovi Patient</h1>
+<PageTitle>Rimuovi Paziente</PageTitle>
+<h1>Rimuovi Paziente</h1>
 
-<p>Are you sure you want to delete this patient?</p>
+<p>Vuoi rimuovere questo paziente?</p>
 
 <button class="btn btn-danger" @onclick="DeletePatient">Rimuovi</button>
-<a class="btn btn-secondary" href="/patients">Cancel</a>
+<a class="btn btn-secondary" href="/patients">Cancella</a>
 
 @code {
     [Parameter]

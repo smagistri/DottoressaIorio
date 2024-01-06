@@ -7,7 +7,7 @@
 <PageTitle>Modifica Terapia</PageTitle>
 <h1>Modifica Terapia</h1>
 
-<a href="/patient/@model.PatientId">Torna indietro</a>
+<a href="/patient/@model.PatientId/therapies">Torna indietro</a>
 <hr class="my-4">
 <EditForm Model="@model" OnValidSubmit="@UpdateTherapy" class="needs-validation" novalidate>
     <DataAnnotationsValidator />
@@ -38,6 +38,6 @@
         model.EditDate = DateTime.Now;
         dbContext.Therapies.Update(model);
         await dbContext.SaveChangesAsync();
-        navigationManager.NavigateTo($"/patient/{model.PatientId}/");
+        navigationManager.NavigateTo($"/patient/{model.PatientId}/therapies");
     }
 }

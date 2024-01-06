@@ -12,29 +12,29 @@
 
     <div class="row g-3">
         <div class="col-12">
-            <label>First Name:*</label>
+            <label>Nome:*</label>
             <input class="form-control" @bind="model.FirstName" />
             <ValidationMessage For="@(() => model.FirstName)" />
         </div>
     </div>
     <div class="row g-3">
         <div class="col-12">
-            <label>Last Name:*</label>
+            <label>Cognome:*</label>
             <input class="form-control" @bind="model.LastName" />
             <ValidationMessage For="@(() => model.LastName)" />
         </div>
     </div>
     <div class="row g-3">
         <div class="col-12">
-            <label>Date of Birth:*</label>
+            <label>Data di Nascita (es: 31/12/1979):*</label>
             <input type="date" class="form-control" @bind="model.DateOfBirth" />
             <ValidationMessage For="@(() => model.DateOfBirth)" />
         </div>
     </div>
     <div class="row g-3">
         <div class="col-12">
-            <label>Email:*</label>
-            <input type="email" class="form-control" @bind="model.Email" />
+            <label>Indirizzo email:*</label>
+            <input type="email" class="form-control" @bind="model.Email" placeholder="name@example.com" />
             <ValidationMessage For="@(() => model.Email)" />
         </div>
     </div>
@@ -50,6 +50,6 @@
         model.CreatedDate = DateTime.Now;
         dbContext.Patients.Add(model);
         await dbContext.SaveChangesAsync();
-        navigationManager.NavigateTo($"/patient/{model.PatientId}");
+        navigationManager.NavigateTo($"/patient/{model.PatientId}/therapies");
     }
 }

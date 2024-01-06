@@ -19,14 +19,12 @@ public class PdfService
         <html>
             <head>
                 <style>
-                    body {{ font-family: Calibri, sans-serif; }}
-                    .content h4 {{ text-align: right; }}
+                    body {{ font-family: Calibri, sans-serif; }} 
                 </style>
             </head>
             <body>
-                <div class=""content""> 
-                    <p>{therapy.Description.Replace("\n", "<br />")}</p>
-                </div>  
+                <h4>{therapy.Patient.Title} {therapy.Patient.FirstName} {therapy.Patient.LastName},</h4>
+                <p>{therapy.Description.Replace("\n", "<br />")}</p>
             </body>
         </html>";
 
@@ -42,8 +40,14 @@ public class PdfService
             PagesCount = true,
             HtmlContent = htmlContent,
             WebSettings = { DefaultEncoding = "utf-8" },
-            HeaderSettings = { FontName = "Calibri", FontSize = 12, Right = $"Data Terapia: {therapy.CreatedDate:dd/MM/yyyy}", Spacing = 15, HtmUrl = "Services/PdfHeader.html" },
-            FooterSettings = { FontName = "Calibri", FontSize = 8, Right = "Pagina [page] di [toPage]", HtmUrl = "Services/PdfFooter.html", Spacing = 10}
+            HeaderSettings = { FontName = "Calibri", FontSize = 12, Spacing = 15,
+                Right = $"Data terapia: {therapy.CreatedDate:dd/MM/yyyy}",
+                HtmUrl = "Services/PdfHeader.html"
+            },
+            FooterSettings = { FontName = "Calibri", FontSize = 8, Spacing = 10,
+                Left = $"Terapia Paziente: {therapy.CreatedDate:dd/MM/yyyy} - {therapy.Patient.Title} {therapy.Patient.FirstName} {therapy.Patient.LastName}",
+                Right = "Pagina [page] di [toPage]", 
+                HtmUrl = "Services/PdfFooter.html",  }
         };
 
         var pdf = _converter.Convert(new HtmlToPdfDocument

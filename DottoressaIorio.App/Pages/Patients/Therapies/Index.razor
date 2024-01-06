@@ -1,18 +1,20 @@
-﻿@page "/patient/{patientId:int}"
+﻿@page "/patient/{patientId:int}/therapies"
 @using DottoressaIorio.App.Models
 @using DottoressaIorio.App.Services
 @using DottoressaIorio.App.Data
+@using Microsoft.EntityFrameworkCore
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
 @inject IJSRuntime jsRuntime
 @inject PdfService pdfService
 
-<PageTitle>Patient Details</PageTitle>
-<h1>@patient.Title @patient.FirstName @patient.LastName</h1>
+<PageTitle>@patient.Title @patient.FirstName @patient.LastName</PageTitle>
+    <h1>@patient.Title @patient.FirstName @patient.LastName</h1>
+<hr class="my-4">
 
 @if (patient == null)
 {
-    <p>Invalid patient ID or patient not found.</p>
+    <p>ID paziente non valido o paziente non trovato.</p>
 }
 else
 {
@@ -42,17 +44,19 @@ else
             </p>
         }
     </div>
-
-    <h3>Therapies</h3>
-
-    <a class="btn btn-primary" href="/patients/edit/@PatientId/therapies/create">Create Therapy</a>
+    <hr class="my-4">
+    <h3>Terapie</h3>
+    <a class="btn btn-outline-primary" href="/patients/edit/@PatientId/therapies/create">
+        Aggiungi
+    </a>
     @if (therapies != null && therapies.Any())
     {
+        <hr class="my-4">
         <table class="table">
             <thead>
                 <tr>
-                    <th>Therapy Date</th>
-                    <th>Actions</th>
+                    <th>Data inizio terapia</th>
+                    <th>Azioni</th>
                 </tr>
             </thead>
             <tbody>
@@ -65,7 +69,7 @@ else
                             </a>
                         </td>
                         <td>
-                            <button class="btn btn-primary" @onclick="() => NavigateToPrintTherapy(t.TherapyId)">Print</button>
+                            <button class="btn btn-primary" @onclick="() => NavigateToPrintTherapy(t.TherapyId)">Scarica</button>
                             <button class="btn btn-danger" @onclick="() => NavigateToDeleteTherapy(t.TherapyId)">Rimuovi</button>
                         </td>
                     </tr>
@@ -85,7 +89,7 @@ else
     protected override void OnInitialized()
     {
         patient = dbContext.Patients.FirstOrDefault(x => x.PatientId == PatientId);
-        therapies = dbContext.Therapies.Where(t => t.PatientId == PatientId).ToList();
+        therapies = dbContext.Therapies.Include(x => x.Patient).Where(t => !t.Deleted && t.PatientId == PatientId).ToList();
     }
 
     private async Task NavigateToPrintTherapy(int id)

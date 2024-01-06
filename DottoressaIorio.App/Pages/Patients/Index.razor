@@ -14,7 +14,7 @@
 
 @if (displayedPatients == null || displayedPatients.Count == 0)
 {
-    <p>No patients found.</p>
+    <p>Nessun paziente trovato.</p>
 }
 else
 {
@@ -33,7 +33,7 @@ else
                 {
                     <tr>
                         <td>
-                            <a href="/patient/@patient.PatientId">@patient.Title @patient.FirstName @patient.LastName</a>
+                            <a href="/patient/@patient.PatientId/therapies">@patient.Title @patient.FirstName @patient.LastName</a>
                         </td>
                         <td>
                             @patient.DateOfBirth?.ToString("dd/MM/yyyy")
@@ -42,7 +42,7 @@ else
                             @patient.CreatedDate?.ToString("dd/MM/yyyy")
                         </td>
                         <td>
-                            <button class="btn btn-primary" @onclick="() => NavigateToEditPatient(patient.PatientId)">Edit</button>
+                            <button class="btn btn-primary" @onclick="() => NavigateToEditPatient(patient.PatientId)">Modifica</button>
                             <button class="btn btn-danger" @onclick="() => NavigateToDeletePatient(patient.PatientId)">Rimuovi</button>
                         </td>
                     </tr>
@@ -144,8 +144,7 @@ else
         }
 
         searchTerm = searchTerm.ToLower();
-        filteredPatients = patients.Where(p =>
-            !p.Deleted &&
+        filteredPatients = patients.Where(p => !p.Deleted &&
             (p.FirstName.ToLower().Contains(searchTerm) ||
             p.LastName.ToLower().Contains(searchTerm))
         )
@@ -156,6 +155,7 @@ else
 
     private void SearchPatients(ChangeEventArgs e)
     {
+        currentPage = 1;
         searchTerm = e.Value.ToString();
         UpdateDisplayedPatients();
     }

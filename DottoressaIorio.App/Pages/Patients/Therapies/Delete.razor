@@ -4,13 +4,13 @@
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
  
-<PageTitle>Rimuovi Therapy</PageTitle>
-<h1>Rimuovi Therapy</h1>
+<PageTitle>Rimuovi Terapia</PageTitle>
+<h1>Rimuovi Terapia</h1>
 
-<p>Are you sure you want to delete this therapy?</p>
+<p>Vuoi rimuovere questa terapia?</p>
 
 <button class="btn btn-danger" @onclick="DeleteTherapy">Rimuovi</button>
-<a class="btn btn-secondary" href="/patient/@model.PatientId">Cancel</a>
+<a class="btn btn-secondary" href="/patient/@model.PatientId/therapies">Cancella</a>
 
 @code {
     [Parameter]
@@ -29,6 +29,6 @@
         model.Deleted = true;
         dbContext.Therapies.Update(model);
         await dbContext.SaveChangesAsync();
-        navigationManager.NavigateTo($"/patient/{model.PatientId}/");
+        navigationManager.NavigateTo($"/patient/{model.PatientId}/therapies");
     }
 }

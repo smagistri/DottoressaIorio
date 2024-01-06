@@ -6,13 +6,13 @@
 
 @using DottoressaIorio.App.Data
 
-<PageTitle>Edit Patient</PageTitle>
-<h1>Edit Patient</h1>
+<PageTitle>Modifica Paziente</PageTitle>
+<h1>Modifica Paziente</h1>
 
 <a href="/patients">Torna indietro</a>
 @if (model == null)
 {
-    <p>Invalid patient ID or patient not found.</p>
+    <p>ID paziente non valido o paziente non trovato.</p>
 }
 else
 {
@@ -21,52 +21,64 @@ else
         <div class="row g-3">
             <div class="col-12">
                 <label for="Title">Title</label>
-                <InputText id="Title" @bind-Value="model.Title" class="form-control" />
+                <select id="Title" @bind="model.Title" class="form-select">
+                    <option value="" selected>Seleziona...</option>
+                    <option value="Sig.re">Signore</option>
+                    <option value="Sig.ra">Signora</option>
+                    <option value="Dott.">Dottore</option>
+                    <option value="Dott.ssa">Dottoressa</option>
+                    <option value="Proff.">Professore</option>
+                    <option value="Proff.essa">Professoressa</option>
+                </select>
             </div>
         </div>
         <div class="row g-3">
             <div class="col-12">
-                <label for="FirstName">First Name</label>
+                <label>Nome:*</label>
                 <InputText id="FirstName" @bind-Value="model.FirstName" class="form-control" />
                 <ValidationMessage For="@(() => model.FirstName)" />
             </div>
         </div>
         <div class="row g-3">
             <div class="col-12">
-                <label for="LastName">Last Name</label>
+                <label>Cognome:*</label>
                 <InputText id="LastName" @bind-Value="model.LastName" class="form-control" />
                 <ValidationMessage For="@(() => model.LastName)" />
             </div>
         </div>
         <div class="row g-3">
             <div class="col-12">
-                <label for="DateOfBirth">Date of Birth</label>
-                <InputDate id="DateOfBirth" @bind-Value="model.DateOfBirth" class="form-control" />
+                <label>Data di Nascita (es: 31/12/1979):*</label>
+                <input type="date" class="form-control" @bind="model.DateOfBirth" />
                 <ValidationMessage For="@(() => model.DateOfBirth)" />
             </div>
         </div>
         <div class="row g-3">
             <div class="col-12">
-                <label for="PlaceOfBirth">Place of Birth</label>
+                <label>Luogo di Nascita:*</label>
                 <InputText id="PlaceOfBirth" @bind-Value="model.PlaceOfBirth" class="form-control" />
             </div>
         </div>
         <div class="row g-3">
             <div class="col-12">
-                <label for="Gender">Gender</label>
-                <InputText id="Gender" @bind-Value="model.Gender" class="form-control" />
+                <label>Sesso</label>
+                <select @bind="model.Gender" class="form-select">
+                    <option value="" selected>Seleziona...</option>
+                    <option value="Sig.re">Maschile</option>
+                    <option value="Sig.ra">Femminile</option>
+                </select>
             </div>
         </div>
         <div class="row g-3">
             <div class="col-12">
-                <label for="PhoneNumber">Phone Number</label>
-                <input type="tel" id="PhoneNumber" class="form-control" @bind="model.PhoneNumber">
+                <label>Numero di telefono:</label>
+                <input type="tel" class="form-control" @bind="model.PhoneNumber">
             </div>
         </div>
 
         <div class="form-group">
-            <label for="Email">Email</label>
-            <input type="email" id="Email" @bind="model.Email" class="form-control">
+            <label>Indirizzo email:*</label>
+            <input type="email" class="form-control" @bind="model.Email" placeholder="name@example.com" />
             <ValidationMessage For="@(() => model.Email)" />
         </div>
         <hr class="my-4">

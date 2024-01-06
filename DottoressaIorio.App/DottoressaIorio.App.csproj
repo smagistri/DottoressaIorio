@@ -8,7 +8,6 @@
 
 	<ItemGroup>
 		<Content Remove="Pages\Patients\Print.razor" />
-		<Content Remove="Pages\Patients\Therapies\Index.razor" />
 	</ItemGroup>
 
 	<ItemGroup>

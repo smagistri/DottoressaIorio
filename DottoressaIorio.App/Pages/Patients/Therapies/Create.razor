@@ -7,7 +7,7 @@
 <PageTitle>Aggiungi Terapia</PageTitle>
 <h1>Aggiungi Terapia</h1>
 
-<a href="/patient/@Id">Torna indietro</a>
+<a href="/patient/@Id/therapies">Torna indietro</a>
 <hr class="my-4">
 <EditForm Model="@model" OnValidSubmit="@CreateTherapy">
     <DataAnnotationsValidator />
@@ -42,7 +42,10 @@
 
     protected override void OnInitialized()
     {
-        templates = dbContext.TherapyTemplates.ToList();
+        templates = dbContext.TherapyTemplates
+            .Where(t => !t.Deleted)
+            .OrderBy(t => t.Title)
+            .ToList();
     }
 
     private async Task CreateTherapy()
@@ -51,12 +54,12 @@
         model.CreatedDate = DateTime.Now;
         dbContext.Therapies.Add(model);
         await dbContext.SaveChangesAsync();
-        navigationManager.NavigateTo($"/patient/{Id}/");
+        navigationManager.NavigateTo($"/patient/{Id}/therapies");
     }
 
     private void TemplateChange(ChangeEventArgs args)
     {
-        var id = (int)(args.Value ?? 0);
+        int.TryParse(args.Value?.ToString(), out var id);
         var selected = templates.Find(x => x.Id == id);
         model.Description = selected.Description;
     }
