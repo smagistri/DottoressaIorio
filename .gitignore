@@ -399,4 +399,5 @@ FodyWeavers.xsd
 /DottoressaIorio.App/app.db-shm
 /DottoressaIorio.App/app.db-wal
 /DottoressaIorio.App/app.db
-/DottoressaIorio.Service
+/Setup/Installer/Service.7z
+/Setup/Service
