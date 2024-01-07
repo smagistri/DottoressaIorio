@@ -5,15 +5,7 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<Content Remove="Pages\Patients\Print.razor" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Remove="InstallActions.bat" />
-		<None Remove="Services\PdfFooter.html" />
-	</ItemGroup>
+  
 
 	<ItemGroup>
 		<PackageReference Include="DinkToPdf" Version="1.0.8" />
@@ -27,9 +19,6 @@
 		<PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Remove="libwkhtmltox.dll" />
-	</ItemGroup>
-	<ItemGroup>
 	  <Content Include="Services\PdfFooter.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
@@ -40,19 +29,13 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="libwkhtmltox.dll">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Include="wwwroot\js\bootstrap\bootstrap.bundle.min.js" />
 	  <None Include="wwwroot\js\bootstrap\bootstrap.bundle.min.js.map" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="app.db">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	</ItemGroup>
 
 </Project>
