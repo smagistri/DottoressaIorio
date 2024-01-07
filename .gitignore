@@ -396,7 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-/Installer
 /DottoressaIorio.App/app.db-shm
 /DottoressaIorio.App/app.db-wal
 /DottoressaIorio.App/app.db
