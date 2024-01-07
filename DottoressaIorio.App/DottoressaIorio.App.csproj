@@ -19,10 +19,10 @@
 		<PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Content Include="Services\PdfFooter.html">
+	  <Content Include="_pdf_therapy\footer.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
-	  <Content Include="Services\PdfHeader.html">
+	  <Content Include="_pdf_therapy\header.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
