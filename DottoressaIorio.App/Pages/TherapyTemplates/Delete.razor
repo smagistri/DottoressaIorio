@@ -11,7 +11,7 @@
 
 <p>Vuoi rimuovere questa terapia precompilata?</p>
 
-<button class="btn btn-danger" @onclick="DeleteTemplate">Rimuovi</button>
+<button class="btn btn-danger" @onclick="@SaveAsync">Rimuovi</button>
 <a class="btn btn-secondary" href="/therapy-templates">Cancella</a>
 
 @code {
@@ -25,7 +25,7 @@
         model = dbContext.TherapyTemplates.Find(Id);
     }
 
-    private async Task DeleteTemplate()
+    private async Task SaveAsync()
     {
         model.EditDate = DateTime.Now;
         model.Deleted = true;

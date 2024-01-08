@@ -19,7 +19,7 @@
 }
 else
 {
-    <EditForm Model="model" OnValidSubmit="@UpdatePatient" class="needs-validation" novalidate>
+    <EditForm Model="model" OnValidSubmit="@SaveAsync" class="needs-validation" novalidate>
         <DataAnnotationsValidator />
         <div class="row g-3">
             <div class="col-12">
@@ -103,7 +103,7 @@ else
         dbContext.Entry(model).State = EntityState.Detached;
     }
 
-    private async Task UpdatePatient()
+    private async Task SaveAsync()
     {
         model.EditDate = DateTime.Now;
         dbContext.Patients.Update(model);

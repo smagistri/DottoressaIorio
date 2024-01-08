@@ -8,7 +8,7 @@
 <h1>Nuovo Paziente</h1>
 <hr class="my-4">
 
-<EditForm Model="@model" OnValidSubmit="@CreatePatient" class="needs-validation" novalidate>
+<EditForm Model="@model" OnValidSubmit="@SaveAsync" class="needs-validation" novalidate>
     <DataAnnotationsValidator />
 
     <div class="row g-3">
@@ -46,7 +46,7 @@
 @code {
     private readonly Patient model = new();
 
-    private async Task CreatePatient()
+    private async Task SaveAsync()
     {
         model.CreatedDate = DateTime.Now;
         dbContext.Patients.Add(model);

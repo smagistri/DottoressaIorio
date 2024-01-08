@@ -69,7 +69,7 @@ else
                         </a>
                     </td>
                     <td>
-                        <button class="btn btn-primary" @onclick="() => NavigateToPrintTherapy(t.TherapyId)">Scarica</button>
+                        <button class="btn btn-primary" @onclick="() => PrintAsync(t.TherapyId)">Scarica</button>
                         <button class="btn btn-danger" @onclick="() => NavigateToDeleteTherapy(t.TherapyId)">Rimuovi</button>
                     </td>
                 </tr>
@@ -86,13 +86,16 @@ else
     private List<Therapy> therapies;
 
 
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
-        patient = dbContext.Patients.FirstOrDefault(x => x.PatientId == PatientId);
-        therapies = dbContext.Therapies.Include(x => x.Patient).Where(t => !t.Deleted && t.PatientId == PatientId).ToList();
+        patient = await dbContext.Patients.FindAsync(PatientId);
+        therapies = dbContext.Therapies
+            .Include(x => x.Patient)
+            .Where(t => !t.Deleted && t.PatientId == PatientId)
+            .ToList();
     }
 
-    private async Task NavigateToPrintTherapy(int id)
+    private async Task PrintAsync(int id)
     {
         var therapy = dbContext.Therapies.FirstOrDefault(t => t.TherapyId == id);
 

@@ -1,30 +1,29 @@
 ﻿@page "/therapies/delete/{id:int}"
 @using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Data 
+@using DottoressaIorio.App.Data
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
- 
+
 <PageTitle>Rimuovi Terapia</PageTitle>
 <h1>Rimuovi Terapia</h1>
 <hr class="my-4">
 
 <p>Vuoi rimuovere questa terapia?</p>
 
-<button class="btn btn-danger" @onclick="DeleteTherapy">Rimuovi</button>
+<button class="btn btn-danger" @onclick="@SaveAsync">Rimuovi</button>
 <a class="btn btn-secondary" href="/patient/@model.PatientId/therapies">Cancella</a>
 
 @code {
-    [Parameter]
-    public int Id { get; set; }
+    [Parameter] public int Id { get; set; }
 
     private Therapy model;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        model = dbContext.Therapies.FirstOrDefault(t => t.TherapyId == Id);
+        model = await dbContext.Therapies.FindAsync(Id);
     }
 
-    private async Task DeleteTherapy()
+    private async Task SaveAsync()
     {
         model.EditDate = DateTime.Now;
         model.Deleted = true;
@@ -32,4 +31,5 @@
         await dbContext.SaveChangesAsync();
         navigationManager.NavigateTo($"/patient/{model.PatientId}/therapies");
     }
+
 }

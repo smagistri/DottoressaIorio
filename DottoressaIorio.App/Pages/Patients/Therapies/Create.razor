@@ -1,6 +1,7 @@
 ﻿@page "/patients/edit/{id:int}/therapies/create"
 @using DottoressaIorio.App.Models
 @using DottoressaIorio.App.Data
+@using Microsoft.EntityFrameworkCore
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
 
@@ -9,12 +10,12 @@
 
 <a href="/patient/@Id/therapies">Torna indietro</a>
 <hr class="my-4">
-<EditForm Model="@model" OnValidSubmit="@CreateTherapy">
+<EditForm Model="@model" OnValidSubmit="@SaveAsync">
     <DataAnnotationsValidator />
     <div class="row g-3">
         <div class="col-12">
             <label for="TemplateId">Precompilato:</label>
-            <select id="TemplateId" @onchange="TemplateChange" class="form-control">
+            <select id="TemplateId" @onchange="TemplateChanged" class="form-control">
                 <option value="0">Seleziona...</option>
                 @foreach (var template in templates)
                 {
@@ -40,15 +41,15 @@
     private readonly Therapy model = new();
     private List<TherapyTemplate> templates;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        templates = dbContext.TherapyTemplates
+        templates = await dbContext.TherapyTemplates
             .Where(t => !t.Deleted)
             .OrderBy(t => t.Title)
-            .ToList();
+            .ToListAsync();
     }
 
-    private async Task CreateTherapy()
+    private async Task SaveAsync()
     {
         model.PatientId = Id;
         model.CreatedDate = DateTime.Now;
@@ -57,7 +58,7 @@
         navigationManager.NavigateTo($"/patient/{Id}/therapies");
     }
 
-    private void TemplateChange(ChangeEventArgs args)
+    private void TemplateChanged(ChangeEventArgs args)
     {
         int.TryParse(args.Value?.ToString(), out var id);
         var selected = templates.Find(x => x.Id == id);

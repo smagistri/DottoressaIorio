@@ -10,7 +10,7 @@
 <h1>Modifica Terapia Precompilata</h1>
 <hr class="my-4">
 
-<EditForm Model="@model" OnValidSubmit="@UpdateTemplate" class="needs-validation" novalidate>
+<EditForm Model="@model" OnValidSubmit="@SaveTask" class="needs-validation" novalidate>
     <DataAnnotationsValidator />
     <div class="row g-3">
         <div class="col-12">
@@ -44,7 +44,7 @@
         dbContext.Entry(model).State = EntityState.Detached;
     }
 
-    private async Task UpdateTemplate()
+    private async Task SaveTask()
     {
         model.EditDate = DateTime.Now;
         dbContext.TherapyTemplates.Update(model);

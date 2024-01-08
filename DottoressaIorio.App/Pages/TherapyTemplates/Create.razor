@@ -8,7 +8,7 @@
 <h1>Aggiungi Terapia Precompilata</h1>
 <hr class="my-4">
 
-<EditForm Model="@model" OnValidSubmit="@CreateTemplate" class="needs-validation" novalidate>
+<EditForm Model="@model" OnValidSubmit="@SaveTask" class="needs-validation" novalidate>
     <DataAnnotationsValidator />
     <div class="row g-3">
         <div class="col-12">
@@ -31,7 +31,7 @@
 @code {
     private TherapyTemplate model = new();
 
-    private async Task CreateTemplate()
+    private async Task SaveTask()
     {
         model.CreatedDate = DateTime.Now;
         dbContext.TherapyTemplates.Add(model);

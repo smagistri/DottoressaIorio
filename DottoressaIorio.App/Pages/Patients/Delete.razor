@@ -11,7 +11,7 @@
 
 <p>Vuoi rimuovere questo paziente?</p>
 
-<button class="btn btn-danger" @onclick="DeletePatient">Rimuovi</button>
+<button class="btn btn-danger" @onclick="@SaveAsync">Rimuovi</button>
 <a class="btn btn-secondary" href="/patients">Cancella</a>
 
 @code {
@@ -25,7 +25,7 @@
         model = dbContext.Patients.Find(Id);
     }
 
-    private async Task DeletePatient()
+    private async Task SaveAsync()
     {
         model.EditDate = DateTime.Now;
         model.Deleted = true;
