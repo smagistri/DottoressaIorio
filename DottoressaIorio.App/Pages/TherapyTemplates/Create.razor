@@ -1,7 +1,5 @@
 ﻿@page "/create-therapy-template"
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Data
-@inject ApplicationDbContext dbContext
+@inject TherapyTemplateRepository repository
 @inject NavigationManager navigationManager
 
 <PageTitle>Aggiungi Terapia Precompilata</PageTitle>
@@ -33,9 +31,7 @@
 
     private async Task SaveTask()
     {
-        model.CreatedDate = DateTime.Now;
-        dbContext.TherapyTemplates.Add(model);
-        await dbContext.SaveChangesAsync();
+        await repository.AddAsync(model);
         navigationManager.NavigateTo("/therapy-templates");
     }
 }

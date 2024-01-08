@@ -2,9 +2,22 @@ body {
     font-size: .875rem;
 }
 
-textarea{
+textarea {
     height: 500px;
 }
+
+.needs-validation label {
+    margin: 10px 0
+}
+
+.needs-validation .validation-message {
+    margin: 10px 0;
+    width: 100%;
+    margin-top: .25rem;
+    font-size: .875em;
+    color: #dc3545;
+}
+
 
 .feather {
     width: 16px;
@@ -126,10 +139,3 @@ textarea{
         border-color: transparent;
         box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
     }
-
-.validation-message {
-    width: 100%;
-    margin-top: .25rem;
-    font-size: .875em;
-    color: #dc3545;
-}

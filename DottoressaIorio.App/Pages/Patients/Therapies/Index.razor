@@ -1,15 +1,13 @@
 ﻿@page "/patient/{patientId:int}/therapies"
-@using Microsoft.EntityFrameworkCore
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Services
-@using DottoressaIorio.App.Data
-@inject ApplicationDbContext dbContext
+
+@inject PatientRepository patientRepository
+@inject PatientTherapyRepository repository
 @inject NavigationManager navigationManager
 @inject IJSRuntime jsRuntime
 @inject PdfService pdfService
 
 <PageTitle>@patient.Title @patient.FirstName @patient.LastName</PageTitle>
-<h1>@patient.Title @patient.FirstName @patient.LastName</h1>
+    <h1>@patient.Title @patient.FirstName @patient.LastName</h1>
 <hr class="my-4">
 
 @if (patient == null)
@@ -54,26 +52,26 @@ else
         <hr class="my-4">
         <table class="table">
             <thead>
-            <tr>
-                <th>Data inizio terapia</th>
-                <th>Azioni</th>
-            </tr>
+                <tr>
+                    <th>Data inizio terapia</th>
+                    <th>Azioni</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var t in therapies)
-            {
-                <tr>
-                    <td>
-                        <a href="/therapies/edit/@t.TherapyId">
-                            @t.CreatedDate.ToString("dd/MM/yyyy")
-                        </a>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary" @onclick="() => PrintAsync(t.TherapyId)">Scarica</button>
-                        <button class="btn btn-danger" @onclick="() => NavigateToDeleteTherapy(t.TherapyId)">Rimuovi</button>
-                    </td>
-                </tr>
-            }
+                @foreach (var t in therapies)
+                {
+                    <tr>
+                        <td>
+                            <a href="/therapies/edit/@t.TherapyId">
+                                @t.CreatedDate.ToString("dd/MM/yyyy")
+                            </a>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="() => PrintAsync(t.TherapyId)">Scarica</button>
+                            <button class="btn btn-danger" @onclick="() => NavigateToDeleteTherapy(t.TherapyId)">Rimuovi</button>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     }
@@ -83,38 +81,28 @@ else
     private Patient patient;
 
     [Parameter] public int PatientId { get; set; }
-    private List<Therapy> therapies;
+    private IList<Therapy> therapies;
 
 
     protected override async Task OnParametersSetAsync()
     {
-        patient = await dbContext.Patients.FindAsync(PatientId);
-        therapies = dbContext.Therapies
-            .Include(x => x.Patient)
-            .Where(t => !t.Deleted && t.PatientId == PatientId)
-            .ToList();
+        patient = await patientRepository.GetByIdAsync(PatientId);
+        therapies = await repository.GetAllByPatientIdAsync(PatientId);
     }
 
     private async Task PrintAsync(int id)
     {
-        var therapy = dbContext.Therapies.FirstOrDefault(t => t.TherapyId == id);
-
-        if (therapy != null)
-        {
-            var pdfBytes = pdfService.GenerateTherapyPdf(therapy);
-
-            // Convert the PDF bytes to a Base64 string
-            var pdfBase64 = Convert.ToBase64String(pdfBytes);
-
-            var filename = $"{patient.FirstName}_{patient.LastName}_{therapy.CreatedDate:yy_MM_dd}_{DateTime.Now.ToFileTimeUtc()}.pdf";
-            // Open the PDF in a new tab
-            await jsRuntime.InvokeVoidAsync("jsSaveAsFile", filename, pdfBase64);
-        }
+        var therapy = await repository.GetByIdAsync(id);
+        var pdfBytes = pdfService.GenerateTherapyPdf(therapy);
+        // Convert the PDF bytes to a Base64 string
+        var pdfBase64 = Convert.ToBase64String(pdfBytes);
+        var filename = $"{patient.FirstName}_{patient.LastName}_{therapy.CreatedDate:yy_MM_dd}_{DateTime.Now.ToFileTimeUtc()}.pdf";
+        // Open the PDF in a new tab
+        await jsRuntime.InvokeVoidAsync("jsSaveAsFile", filename, pdfBase64);
     }
 
     private void NavigateToDeleteTherapy(int id)
     {
         navigationManager.NavigateTo($"/therapies/delete/{id}");
     }
-
 }

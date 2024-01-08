@@ -1,8 +1,6 @@
 ﻿@page "/therapy-templates"
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Data
-@using Microsoft.EntityFrameworkCore
-@inject ApplicationDbContext dbContext
+
+@inject TherapyTemplateRepository repository
 @inject NavigationManager navigationManager
 
 <PageTitle>Terapie Precompilate</PageTitle>
@@ -39,16 +37,12 @@ else
 }
 
 @code {
-    private List<TherapyTemplate> therapyTemplates;
+    private IList<TherapyTemplate> therapyTemplates;
 
     protected override async Task OnInitializedAsync()
     {
-        therapyTemplates = await dbContext.TherapyTemplates
-            .Where(x => !x.Deleted)
-            .OrderBy(x => x.Title)
-            .ToListAsync();
+        therapyTemplates = await repository.GetAllAsync();
     }
-
 
     private void NavigateToEdit(int id)
     {

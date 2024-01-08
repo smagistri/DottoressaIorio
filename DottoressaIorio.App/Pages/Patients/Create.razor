@@ -1,7 +1,5 @@
 ﻿@page "/create-patient"
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Data
-@inject ApplicationDbContext dbContext
+@inject PatientRepository repository 
 @inject NavigationManager navigationManager
 
 <PageTitle>Nuovo Paziente</PageTitle>
@@ -48,9 +46,7 @@
 
     private async Task SaveAsync()
     {
-        model.CreatedDate = DateTime.Now;
-        dbContext.Patients.Add(model);
-        await dbContext.SaveChangesAsync();
+        await repository.AddAsync(model); 
         navigationManager.NavigateTo($"/patient/{model.PatientId}/therapies");
     }
 }

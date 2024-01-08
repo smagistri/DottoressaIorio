@@ -1,9 +1,5 @@
-﻿<!-- Pages/TherapyTemplates/Edit.razor -->
-@page "/therapy-templates/edit/{id:int}"
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Data
-@using Microsoft.EntityFrameworkCore
-@inject ApplicationDbContext dbContext
+﻿@page "/therapy-templates/edit/{id:int}"
+@inject TherapyTemplateRepository repository
 @inject NavigationManager navigationManager
 
 <PageTitle>Modifica Terapia Precompilata</PageTitle>
@@ -38,17 +34,12 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        model = await dbContext.TherapyTemplates.FindAsync(Id);
-
-        // Detach the entity if it is already being tracked by the context
-        dbContext.Entry(model).State = EntityState.Detached;
+        model = await repository.GetByIdAsync(Id);
     }
 
     private async Task SaveTask()
     {
-        model.EditDate = DateTime.Now;
-        dbContext.TherapyTemplates.Update(model);
-        await dbContext.SaveChangesAsync();
+        await repository.UpdateAsync(model);
         navigationManager.NavigateTo("/therapy-templates");
     }
 }

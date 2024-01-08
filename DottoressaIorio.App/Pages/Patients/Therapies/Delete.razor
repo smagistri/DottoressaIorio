@@ -1,7 +1,6 @@
 ﻿@page "/therapies/delete/{id:int}"
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Data
-@inject ApplicationDbContext dbContext
+
+@inject PatientTherapyRepository repository
 @inject NavigationManager navigationManager
 
 <PageTitle>Rimuovi Terapia</PageTitle>
@@ -18,17 +17,14 @@
 
     private Therapy model;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        model = await dbContext.Therapies.FindAsync(Id);
+        model = await repository.GetByIdAsync(Id);
     }
 
     private async Task SaveAsync()
     {
-        model.EditDate = DateTime.Now;
-        model.Deleted = true;
-        dbContext.Therapies.Update(model);
-        await dbContext.SaveChangesAsync();
+        await repository.DeleteAsync(model);
         navigationManager.NavigateTo($"/patient/{model.PatientId}/therapies");
     }
 

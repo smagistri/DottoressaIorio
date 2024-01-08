@@ -1,7 +1,6 @@
-﻿using DottoressaIorio.App.Data;
-using DottoressaIorio.App.Models;
+﻿using DottoressaIorio.App.Models;
+using DottoressaIorio.App.Services.Repositories;
 using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore;
 
 namespace DottoressaIorio.App.Pages.Patients;
 
@@ -9,21 +8,21 @@ public class PatientsBase : ComponentBase
 {
     protected readonly int PageSize = 10; // Number of patients per page
 
-    private List<Patient> patients;
+    private IList<Patient> patients;
 
-    [Inject] public ApplicationDbContext DbContext { get; set; }
+    [Inject] public PatientRepository Repository { get; set; }
 
     [Inject] public NavigationManager NavigationManager { get; set; }
 
-    protected List<Patient> DisplayedPatients { get; set; }
-    protected List<Patient> FilteredPatients { get; set; }
+    protected IList<Patient> DisplayedPatients { get; set; }
+    protected IList<Patient> FilteredPatients { get; set; }
     protected int CurrentPage { get; set; } = 1;
     protected int TotalPages => (int)Math.Ceiling((double)FilteredPatients.Count / PageSize);
     protected string SearchTerm { get; set; } = "";
 
     protected override async Task OnInitializedAsync()
     {
-        patients = await DbContext.Patients.ToListAsync();
+        patients = await Repository.GetAllAsync();
         await UpdateDisplayedPatients();
     }
 
@@ -43,13 +42,7 @@ public class PatientsBase : ComponentBase
         else
         {
             SearchTerm = SearchTerm.ToLower();
-            FilteredPatients = await DbContext.Patients
-                .Where(p => !p.Deleted &&
-                            (p.FirstName.ToLower().Contains(SearchTerm) ||
-                             p.LastName.ToLower().Contains(SearchTerm)))
-                .OrderBy(x => x.LastName)
-                .ThenBy(x => x.FirstName)
-                .ToListAsync();
+            FilteredPatients = await Repository.GetFilteredPatientsAsync(SearchTerm);
         }
     }
 

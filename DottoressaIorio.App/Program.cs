@@ -3,6 +3,7 @@ using DinkToPdf;
 using DottoressaIorio.App.Data;
 using DottoressaIorio.App.Services;
 using Microsoft.EntityFrameworkCore;
+using DottoressaIorio.App.Services.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 // Register PdfService
+builder.Services.AddScoped<TherapyTemplateRepository>();
+builder.Services.AddScoped<PatientTherapyRepository>();
+builder.Services.AddScoped<PatientRepository>();
 builder.Services.AddScoped<PdfService>();
 
 var app = builder.Build();

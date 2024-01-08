@@ -1,8 +1,7 @@
 ﻿@page "/patients/edit/{id:int}/therapies/create"
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Data
-@using Microsoft.EntityFrameworkCore
-@inject ApplicationDbContext dbContext
+
+@inject TherapyTemplateRepository templateRepository
+@inject PatientTherapyRepository repository
 @inject NavigationManager navigationManager
 
 <PageTitle>Aggiungi Terapia</PageTitle>
@@ -39,29 +38,24 @@
     [Parameter]
     public int Id { get; set; }
     private readonly Therapy model = new();
-    private List<TherapyTemplate> templates;
+    private IList<TherapyTemplate> templates;
 
     protected override async Task OnInitializedAsync()
     {
-        templates = await dbContext.TherapyTemplates
-            .Where(t => !t.Deleted)
-            .OrderBy(t => t.Title)
-            .ToListAsync();
+        templates = await templateRepository.GetAllAsync();
     }
 
     private async Task SaveAsync()
     {
         model.PatientId = Id;
-        model.CreatedDate = DateTime.Now;
-        dbContext.Therapies.Add(model);
-        await dbContext.SaveChangesAsync();
+        await  repository.AddAsync(model); 
         navigationManager.NavigateTo($"/patient/{Id}/therapies");
     }
 
-    private void TemplateChanged(ChangeEventArgs args)
+    private async Task TemplateChanged(ChangeEventArgs args)
     {
         int.TryParse(args.Value?.ToString(), out var id);
-        var selected = templates.Find(x => x.Id == id);
+        var selected = await templateRepository.GetByIdAsync(id);
         model.Description = selected.Description;
     }
 }

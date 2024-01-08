@@ -1,8 +1,5 @@
-﻿<!-- Pages/Patients/DeletePatient.razor -->
-@page "/patients/delete/{id:int}"
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Data
-@inject ApplicationDbContext dbContext
+﻿@page "/patients/delete/{id:int}"
+@inject PatientRepository repository
 @inject NavigationManager navigationManager
 
 <PageTitle>Rimuovi Paziente</PageTitle>
@@ -20,17 +17,14 @@
 
     private Patient model;
 
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
-        model = dbContext.Patients.Find(Id);
+        model = await repository.GetByIdAsync(Id);
     }
 
     private async Task SaveAsync()
     {
-        model.EditDate = DateTime.Now;
-        model.Deleted = true;
-        dbContext.Patients.Update(model);
-        await dbContext.SaveChangesAsync();
+        await repository.DeleteAsync(model);
         navigationManager.NavigateTo("/patients");
     }
 }

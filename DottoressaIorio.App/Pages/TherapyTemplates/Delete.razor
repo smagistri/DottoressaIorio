@@ -1,8 +1,5 @@
-﻿<!-- Pages/therapy-templates/Delete.razor -->
-@page "/therapy-templates/delete/{id:int}"
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Data
-@inject ApplicationDbContext dbContext
+﻿@page "/therapy-templates/delete/{id:int}"
+@inject TherapyTemplateRepository repository
 @inject NavigationManager navigationManager
 
 <PageTitle>Rimuovi Terapia Precompilata</PageTitle>
@@ -20,17 +17,14 @@
 
     private TherapyTemplate model;
 
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
-        model = dbContext.TherapyTemplates.Find(Id);
+        model = await repository.GetByIdAsync(Id);
     }
 
     private async Task SaveAsync()
     {
-        model.EditDate = DateTime.Now;
-        model.Deleted = true;
-        dbContext.TherapyTemplates.Update(model);
-        await dbContext.SaveChangesAsync();
+        await repository.DeleteAsync(model);
         navigationManager.NavigateTo("/therapy-templates");
     }
 }

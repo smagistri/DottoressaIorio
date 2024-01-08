@@ -1,11 +1,7 @@
 ﻿@page "/patients/edit/{id:int}"
-@inject ApplicationDbContext dbContext
+@inject PatientRepository repository
 @inject NavigationManager navigationManager
 
-@using DottoressaIorio.App.Models
-
-@using DottoressaIorio.App.Data
-@using Microsoft.EntityFrameworkCore
 
 <PageTitle>Modifica Paziente</PageTitle>
 <h1>Modifica Paziente</h1>
@@ -64,14 +60,26 @@ else
         </div>
         <div class="row g-3">
             <div class="col-12">
-                <label>Sesso</label>
-                <select @bind="model.Gender" class="form-select">
-                    <option value="" selected>Seleziona...</option>
-                    <option value="Sig.re">Maschile</option>
-                    <option value="Sig.ra">Femminile</option>
-                </select>
+                <label>Sesso:</label>
+                <div class="form-check form-check-inline">
+                    <input type="radio" checked="@(model.Gender == "Maschio")"
+                           name="Gender" @onchange="@(() => model.Gender = "Maschio")" />
+                    <label class="form-check-label" for="genderMale">Maschio</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" checked="@(model.Gender == "Femmina")"
+                           name="Gender" @onchange="@(() => model.Gender = "Femmina")" />
+                    <label class="form-check-label" for="genderFemale">Femmina</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" checked="@(model.Gender == "Altro")"
+                           name="Gender" @onchange="@(() => model.Gender = "Altro")" />
+                    <label class="form-check-label" for="genderFemale">Altro</label>
+                </div>
             </div>
         </div>
+
+
         <div class="row g-3">
             <div class="col-12">
                 <label>Numero di telefono:</label>
@@ -94,20 +102,15 @@ else
     public int Id { get; set; }
 
     private Patient model;
-     
+
     protected override async Task OnParametersSetAsync()
     {
-        model = await dbContext.Patients.FindAsync(Id);
-
-        // Detach the entity if it is already being tracked by the context
-        dbContext.Entry(model).State = EntityState.Detached;
+        model = await repository.GetByIdAsync(Id);
     }
 
     private async Task SaveAsync()
     {
-        model.EditDate = DateTime.Now;
-        dbContext.Patients.Update(model);
-        await dbContext.SaveChangesAsync();
+        await repository.UpdateAsync(model);
         navigationManager.NavigateTo("/patients");
     }
 }

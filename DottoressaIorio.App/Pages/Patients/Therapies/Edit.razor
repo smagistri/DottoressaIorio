@@ -1,8 +1,6 @@
 ﻿@page "/therapies/edit/{id:int}"
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Data
-@using Microsoft.EntityFrameworkCore
-@inject ApplicationDbContext dbContext
+
+@inject PatientTherapyRepository repository
 @inject NavigationManager navigationManager
 
 <PageTitle>Modifica Terapia</PageTitle>
@@ -32,17 +30,12 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        model = await dbContext.Therapies.FindAsync(Id);
-
-        // Detach the entity if it is already being tracked by the context
-        dbContext.Entry(model).State = EntityState.Detached;
+        model = await repository.GetByIdAsync(Id);
     }
 
     private async Task SaveAsync()
     {
-        model.EditDate = DateTime.Now;
-        dbContext.Therapies.Update(model);
-        await dbContext.SaveChangesAsync();
+        await repository.UpdateAsync(model);
         navigationManager.NavigateTo($"/patient/{model.PatientId}/therapies");
     }
 }
