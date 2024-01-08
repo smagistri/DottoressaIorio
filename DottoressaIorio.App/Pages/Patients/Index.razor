@@ -1,9 +1,5 @@
 ﻿@page "/patients"
-@using DottoressaIorio.App.Models
-@using DottoressaIorio.App.Data
-@using Microsoft.EntityFrameworkCore
-@inject ApplicationDbContext dbContext
-@inject NavigationManager navigationManager
+@inherits PatientsBase
 
 <PageTitle>Pazienti</PageTitle>
 <h1>Pazienti</h1>
@@ -11,163 +7,56 @@
 
 <div class="mb-3">
     <label for="search" class="form-label">Cerca il nome del paziente</label>
-    <input type="text" class="form-control" id="search" @bind="searchTerm" @oninput="SearchPatients" />
+    <input type="text" class="form-control" id="search" @bind="SearchTerm" @oninput="SearchPatients"/>
 </div>
 
-@if (displayedPatients == null || displayedPatients.Count == 0)
+@if (DisplayedPatients == null || DisplayedPatients.Count == 0)
 {
     <hr class="my-4">
     <p>Nessun paziente trovato.</p>
 }
 else
 {
+    <Pagination CurrentPage="CurrentPage"
+                TotalPages="TotalPages"
+                SelectedPage="HandleSelectedPage"
+                PreviousPage="PreviousPage"
+                NextPage="NextPage" />
     <div class="table-responsive">
         <table class="table table-striped table-sm">
             <thead>
-                <tr>
-                    <th>Paziente</th>
-                    <th>Data di Nascita</th>
-                    <th>Visitato</th>
-                    <th>Azioni</th>
-                </tr>
+            <tr>
+                <th>Paziente</th>
+                <th>Data di Nascita</th>
+                <th>Visitato</th>
+                <th>Azioni</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var patient in displayedPatients)
-                {
-                    <tr>
-                        <td>
-                            <a href="/patient/@patient.PatientId/therapies">@patient.Title @patient.FirstName @patient.LastName</a>
-                        </td>
-                        <td>
-                            @patient.DateOfBirth?.ToString("dd/MM/yyyy")
-                        </td>
-                        <td>
-                            @patient.CreatedDate.ToString("dd/MM/yyyy")
-                        </td>
-                        <td>
-                            <button class="btn btn-primary" @onclick="() => NavigateToEditPatient(patient.PatientId)">Modifica</button>
-                            <button class="btn btn-danger" @onclick="() => NavigateToDeletePatient(patient.PatientId)">Rimuovi</button>
-                        </td>
-                    </tr>
-                }
+            @foreach (var patient in DisplayedPatients)
+            {
+                <tr>
+                    <td>
+                        <a href="/patient/@patient.PatientId/therapies">@patient.Title @patient.FirstName @patient.LastName</a>
+                    </td>
+                    <td>
+                        @patient.DateOfBirth?.ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @patient.CreatedDate.ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => NavigateToEditPatient(patient.PatientId)">Modifica</button>
+                        <button class="btn btn-danger" @onclick="() => NavigateToDeletePatient(patient.PatientId)">Rimuovi</button>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
-    <nav aria-label="Patients Pagination">
-        <ul class="pagination">
-            <li class="page-item" @onclick="PreviousPage">
-                <a class="page-link" href="#" @onclick:preventDefault>
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            @for (var pageIndex = 1; pageIndex <= totalPages; pageIndex++)
-            {
-                if (pageIndex == currentPage)
-                {
-                    <li class="page-item active" aria-current="page">
-                        <span class="page-link">@pageIndex</span>
-                    </li>
-                }
-                else
-                {
-                    var i = pageIndex;
-                    <li class="page-item">
-                        <button class="page-link" href="#"
-                                @onclick="() => SelectedPage(i)">
-                            @pageIndex
-                        </button>
-                    </li>
-                }
-            }
-            <li class="page-item" @onclick="NextPage">
-                <a class="page-link" href="#" @onclick:preventDefault>
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-}
-
-@code {
-    List<Patient> patients;
-    private List<Patient> displayedPatients;
-    private List<Patient> filteredPatients;
-    private readonly int pageSize = 10; // Number of patients per page
-    private int currentPage = 1;
-    private int totalPages => (int)Math.Ceiling((double)filteredPatients.Count / pageSize);
-    private string searchTerm = "";
-
-    protected override async Task OnInitializedAsync()
-    {
-        patients = await dbContext.Patients.ToListAsync();
-        await UpdateDisplayedPatients();
-    }
-
-    private async Task UpdateDisplayedPatients()
-    {
-        await FilterPatientsBySearchTermAsync();
-        var startIndex = (currentPage - 1) * pageSize;
-        displayedPatients = filteredPatients.Skip(startIndex).Take(pageSize).ToList();
-    }
-
-    private async Task FilterPatientsBySearchTermAsync()
-    {
-        if (string.IsNullOrWhiteSpace(searchTerm))
-        {
-            filteredPatients = patients;
-        }
-        else
-        {
-            searchTerm = searchTerm.ToLower();
-            filteredPatients = await dbContext.Patients
-                .Where(p => !p.Deleted &&
-                            (p.FirstName.ToLower().Contains(searchTerm) ||
-                             p.LastName.ToLower().Contains(searchTerm)))
-                .OrderBy(x => x.LastName)
-                .ThenBy(x => x.FirstName)
-                .ToListAsync();
-        }
-    }
-
-    private async Task SearchPatients(ChangeEventArgs e)
-    {
-        currentPage = 1;
-        searchTerm = e.Value.ToString();
-        await UpdateDisplayedPatients();
-    }
-
-    private async Task SelectedPage(int i)
-    {
-        currentPage = i;
-        await UpdateDisplayedPatients();
-    }
-     
-
-    private void NavigateToEditPatient(int patientId)
-    {
-        navigationManager.NavigateTo($"/patients/edit/{patientId}");
-    }
-
-    private void NavigateToDeletePatient(int id)
-    {
-        navigationManager.NavigateTo($"/patients/delete/{id}");
-    }
-
-    private async Task PreviousPage()
-    {
-        if (currentPage != 1)
-        {
-            currentPage--;
-            await UpdateDisplayedPatients();
-        }
-    }
-
-    private async Task NextPage()
-    {
-        if (currentPage != totalPages)
-        {
-            currentPage++;
-            await  UpdateDisplayedPatients();
-        }
-    }
+    <Pagination CurrentPage="CurrentPage"
+                TotalPages="TotalPages"
+                SelectedPage="HandleSelectedPage"
+                PreviousPage="PreviousPage"
+                NextPage="NextPage" />
 }

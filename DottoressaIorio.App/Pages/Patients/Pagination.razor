@@ -1,0 +1,35 @@
+﻿@inherits PaginationBase
+
+<nav aria-label="Patients Pagination">
+    <ul class="pagination">
+        <li class="page-item" @onclick="PreviousPage">
+            <a class="page-link" href="#" @onclick:preventDefault>
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        @for (var pageIndex = 1; pageIndex <= TotalPages; pageIndex++)
+        {
+            if (pageIndex == CurrentPage)
+            {
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">@pageIndex</span>
+                </li>
+            }
+            else
+            {
+                var i = pageIndex;
+                <li class="page-item">
+                    <button class="page-link" href="#"
+                            @onclick="() => SelectedPage.InvokeAsync(i)">
+                        @pageIndex
+                    </button>
+                </li>
+            }
+        }
+        <li class="page-item" @onclick="NextPage">
+            <a class="page-link" href="#" @onclick:preventDefault>
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
