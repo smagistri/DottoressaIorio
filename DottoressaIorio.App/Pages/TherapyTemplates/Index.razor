@@ -1,6 +1,7 @@
 ﻿@page "/therapy-templates"
 @using DottoressaIorio.App.Models
 @using DottoressaIorio.App.Data
+@using Microsoft.EntityFrameworkCore
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
 
@@ -40,13 +41,14 @@ else
 @code {
     private List<TherapyTemplate> therapyTemplates;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        therapyTemplates = dbContext.TherapyTemplates
+        therapyTemplates = await dbContext.TherapyTemplates
             .Where(x => !x.Deleted)
             .OrderBy(x => x.Title)
-            .ToList();
+            .ToListAsync();
     }
+
 
     private void NavigateToEdit(int id)
     {

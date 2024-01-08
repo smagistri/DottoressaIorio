@@ -1,6 +1,7 @@
 ﻿@page "/patients"
 @using DottoressaIorio.App.Models
 @using DottoressaIorio.App.Data
+@using Microsoft.EntityFrameworkCore
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
 
@@ -96,37 +97,51 @@ else
     private int totalPages => (int)Math.Ceiling((double)filteredPatients.Count / pageSize);
     private string searchTerm = "";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        patients = dbContext.Patients.ToList();
-        UpdateDisplayedPatients();
+        patients = await dbContext.Patients.ToListAsync();
+        await UpdateDisplayedPatients();
     }
 
-
-    private void UpdateDisplayedPatients()
+    private async Task UpdateDisplayedPatients()
     {
-        FilterPatientsBySearchTerm();
+        await FilterPatientsBySearchTermAsync();
         var startIndex = (currentPage - 1) * pageSize;
         displayedPatients = filteredPatients.Skip(startIndex).Take(pageSize).ToList();
     }
 
-    private void PreviousPage()
+    private async Task FilterPatientsBySearchTermAsync()
     {
-        if (currentPage != 1)
+        if (string.IsNullOrWhiteSpace(searchTerm))
         {
-            currentPage--;
-            UpdateDisplayedPatients();
+            filteredPatients = patients;
+        }
+        else
+        {
+            searchTerm = searchTerm.ToLower();
+            filteredPatients = await dbContext.Patients
+                .Where(p => !p.Deleted &&
+                            (p.FirstName.ToLower().Contains(searchTerm) ||
+                             p.LastName.ToLower().Contains(searchTerm)))
+                .OrderBy(x => x.LastName)
+                .ThenBy(x => x.FirstName)
+                .ToListAsync();
         }
     }
 
-    private void NextPage()
+    private async Task SearchPatients(ChangeEventArgs e)
     {
-        if (currentPage != totalPages)
-        {
-            currentPage++;
-            UpdateDisplayedPatients();
-        }
+        currentPage = 1;
+        searchTerm = e.Value.ToString();
+        await UpdateDisplayedPatients();
     }
+
+    private async Task SelectedPage(int i)
+    {
+        currentPage = i;
+        await UpdateDisplayedPatients();
+    }
+     
 
     private void NavigateToEditPatient(int patientId)
     {
@@ -138,34 +153,21 @@ else
         navigationManager.NavigateTo($"/patients/delete/{id}");
     }
 
-    private void FilterPatientsBySearchTerm()
+    private async Task PreviousPage()
     {
-        if (string.IsNullOrWhiteSpace(searchTerm))
+        if (currentPage != 1)
         {
-            filteredPatients = patients;
+            currentPage--;
+            await UpdateDisplayedPatients();
         }
-
-        searchTerm = searchTerm.ToLower();
-        filteredPatients = patients.Where(p => !p.Deleted &&
-            (p.FirstName.ToLower().Contains(searchTerm) ||
-            p.LastName.ToLower().Contains(searchTerm))
-        )
-        .OrderBy(x => x.LastName)
-        .ThenBy(x => x.FirstName)
-        .ToList();
     }
 
-    private void SearchPatients(ChangeEventArgs e)
+    private async Task NextPage()
     {
-        currentPage = 1;
-        searchTerm = e.Value.ToString();
-        UpdateDisplayedPatients();
+        if (currentPage != totalPages)
+        {
+            currentPage++;
+            await  UpdateDisplayedPatients();
+        }
     }
-
-    private void SelectedPage(int i)
-    {
-        currentPage = i;
-        UpdateDisplayedPatients();
-    }
-
 }
