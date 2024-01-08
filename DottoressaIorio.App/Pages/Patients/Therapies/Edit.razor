@@ -1,6 +1,7 @@
 ﻿@page "/therapies/edit/{id:int}"
 @using DottoressaIorio.App.Models
 @using DottoressaIorio.App.Data
+@using Microsoft.EntityFrameworkCore
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
 
@@ -29,9 +30,12 @@
 
     private Therapy model;
 
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
-        model = dbContext.Therapies.First(t => t.TherapyId == Id);
+        model = await dbContext.Therapies.FindAsync(Id);
+
+        // Detach the entity if it is already being tracked by the context
+        dbContext.Entry(model).State = EntityState.Detached;
     }
 
     private async Task UpdateTherapy()

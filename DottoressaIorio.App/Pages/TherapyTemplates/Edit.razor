@@ -1,7 +1,8 @@
-﻿<!-- Pages/therapy-templates/Edit.razor -->
+﻿<!-- Pages/TherapyTemplates/Edit.razor -->
 @page "/therapy-templates/edit/{id:int}"
 @using DottoressaIorio.App.Models
 @using DottoressaIorio.App.Data
+@using Microsoft.EntityFrameworkCore
 @inject ApplicationDbContext dbContext
 @inject NavigationManager navigationManager
 
@@ -35,9 +36,12 @@
 
     private TherapyTemplate model;
 
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
-        model = dbContext.TherapyTemplates.Find(Id);
+        model = await dbContext.TherapyTemplates.FindAsync(Id);
+
+        // Detach the entity if it is already being tracked by the context
+        dbContext.Entry(model).State = EntityState.Detached;
     }
 
     private async Task UpdateTemplate()
