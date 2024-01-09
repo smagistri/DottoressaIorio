@@ -53,7 +53,6 @@ The application uses a local SQLite database. Database setup, including schema a
 
 PDF files are generated and downloaded locally on the doctor's computer. The application manages the linking of patient records to their respective files.
 
-
 ## Deployment
 
 Deploy the application to the doctor's computer for local use.
@@ -64,7 +63,7 @@ Thoroughly test the application to ensure it meets the specified requirements. I
 
 ## Contributing
 
-Contribute to the project by submitting bug reports, feature requests, or code contributions. Follow the guidelines outlined in the CONTRIBUTING.md file.
+Contribute to the project by submitting bug reports, feature requests, or code contributions. Follow the guidelines outlined in the CONTRIBUTING.md file. https://chat.openai.com/share/f6f0854a-aecb-43c7-aff6-d5e35711ac9b
 
 ## License
 
