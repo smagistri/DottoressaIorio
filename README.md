@@ -82,14 +82,14 @@ PDF files are generated and downloaded locally on the doctor's computer. The app
 REM Replace placeholders with actual paths and commands
 -ExecutionPolicy Bypass -File "C:\path\to\your\backup_script.ps1"
 ```
-
+See also: https://chat.openai.com/share/f6f0854a-aecb-43c7-aff6-d5e35711ac9b
 ## Testing
 
 Thoroughly test the application to ensure it meets the specified requirements. Include unit tests and integration tests as needed.
 
 ## Contributing
 
-Contribute to the project by submitting bug reports, feature requests, or code contributions. Follow the guidelines outlined in the CONTRIBUTING.md file. https://chat.openai.com/share/f6f0854a-aecb-43c7-aff6-d5e35711ac9b
+Contribute to the project by submitting bug reports, feature requests, or code contributions. Follow the guidelines outlined in the CONTRIBUTING.md file. 
 
 ## License
 
