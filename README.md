@@ -11,7 +11,7 @@ The Medical Management App is a Blazor Web Application designed for individual d
 - [Usage](#usage)
 - [Database](#database)
 - [File Storage](#file-storage)
-- [Deployment](#deployment)
+- [Deployment](#deployment-steps)
 - [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
