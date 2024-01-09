@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DottoressaIorio.App.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialCreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,7 @@ namespace DottoressaIorio.App.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     EditDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Deleted = table.Column<bool>(type: "INTEGER", nullable: false)
                 },

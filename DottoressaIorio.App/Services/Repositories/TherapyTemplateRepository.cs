@@ -20,23 +20,4 @@ public class TherapyTemplateRepository : GenericRepository<TherapyTemplate>
             .OrderBy(x => x.Title)
             .ToListAsync();
     }
-
-    public override async Task AddAsync(TherapyTemplate entity)
-    {
-        entity.CreatedDate = DateTime.Now;
-        await base.AddAsync(entity);
-    }
-
-    public override async Task UpdateAsync(TherapyTemplate entity)
-    {
-        entity.EditDate = DateTime.Now;
-        await base.UpdateAsync(entity);
-    }
-
-    public async Task DeleteAsync(TherapyTemplate entity)
-    {
-        entity.EditDate = DateTime.Now;
-        entity.Deleted = true;
-        await base.UpdateAsync(entity);
-    }
 }

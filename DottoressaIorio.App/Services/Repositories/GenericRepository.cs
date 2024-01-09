@@ -1,9 +1,10 @@
 ﻿using DottoressaIorio.App.Data;
+using DottoressaIorio.App.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DottoressaIorio.App.Services.Repositories;
 
-public class GenericRepository<T> where T : class
+public class GenericRepository<T> where T : class, IDataHandler
 {
     private readonly ApplicationDbContext _context;
 
@@ -26,23 +27,21 @@ public class GenericRepository<T> where T : class
 
     public virtual async Task AddAsync(T entity)
     {
+        entity.CreatedDate = DateTime.Now;
         _context.Set<T>().Add(entity);
         await _context.SaveChangesAsync();
     }
 
     public virtual async Task UpdateAsync(T entity)
     {
+        entity.EditDate = DateTime.Now;
         _context.Entry(entity).State = EntityState.Modified;
         await _context.SaveChangesAsync();
     }
 
-    public virtual async Task DeleteAsync(int id)
+    public virtual async Task DeleteAsync(T entity)
     {
-        var entity = await _context.Set<T>().FindAsync(id);
-        if (entity != null)
-        {
-            _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
-        }
+        entity.Deleted = true;
+        await UpdateAsync(entity);
     }
 }

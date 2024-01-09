@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DottoressaIorio.App.Models;
 
-public class Patient
+public class Patient : IDataHandler
 {
     public int PatientId { get; set; }
     public string? Title { get; set; }

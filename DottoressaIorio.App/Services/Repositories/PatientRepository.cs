@@ -23,23 +23,4 @@ public class PatientRepository : GenericRepository<Patient>
             .ThenBy(x => x.FirstName)
             .ToListAsync();
     }
-
-    public override async Task AddAsync(Patient entity)
-    {
-        entity.CreatedDate = DateTime.Now;
-        await base.AddAsync(entity);
-    }
-
-    public override async Task UpdateAsync(Patient entity)
-    {
-        entity.EditDate = DateTime.Now;
-        await base.UpdateAsync(entity);
-    }
-
-    public async Task DeleteAsync(Patient entity)
-    {
-        entity.EditDate = DateTime.Now;
-        entity.Deleted = true;
-        await base.UpdateAsync(entity);
-    }
 }

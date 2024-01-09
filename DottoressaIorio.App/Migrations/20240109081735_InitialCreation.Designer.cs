@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DottoressaIorio.App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240106231145_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240109081735_InitialCreation")]
+    partial class InitialCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,7 +102,7 @@ namespace DottoressaIorio.App.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Deleted")

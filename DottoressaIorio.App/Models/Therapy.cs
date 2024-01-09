@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DottoressaIorio.App.Models
 {
-    public class Therapy
+    public class Therapy : IDataHandler
     {
         public int TherapyId { get; set; }
         [Required(ErrorMessage = "La descrizione é richiesta.")]
