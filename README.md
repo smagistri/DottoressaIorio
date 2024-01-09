@@ -11,7 +11,6 @@ The Medical Management App is a Blazor Web Application designed for individual d
 - [Usage](#usage)
 - [Database](#database)
 - [File Storage](#file-storage)
-- [Authentication and Authorization](#authentication-and-authorization)
 - [Deployment](#deployment)
 - [Testing](#testing)
 - [Contributing](#contributing)
@@ -19,14 +18,13 @@ The Medical Management App is a Blazor Web Application designed for individual d
 
 ## Overview
 
-The Medical Management App enables individual doctors to manage patient records, therapy sessions, and associated PDF files. With a focus on simplicity and efficiency, the app provides a secure and user-friendly environment for doctors to track and organize their patient information.
+The Medical Management App enables individual doctors to manage patient records, therapy sessions, and generated PDF files. With a focus on simplicity and efficiency, the app provides a secure and user-friendly environment for doctors to track and organize their patient information.
 
 ## Features
 
 - Patient management with detailed information including title, first name, last name, date of birth, place of birth, gender, phone number, and email.
 - Therapy tracking for each patient.
 - Attachment of one or more PDF files to each patient record.
-- Secure login and authorization ensuring only the doctor can access the application.
 
 ## Requirements
 
@@ -53,11 +51,8 @@ The application uses a local SQLite database. Database setup, including schema a
 
 ## File Storage
 
-PDF files are stored in a local folder on the doctor's computer. The application manages the linking of patient records to their respective files.
+PDF files are generated and downloaded locally on the doctor's computer. The application manages the linking of patient records to their respective files.
 
-## Authentication and Authorization
-
-Secure login ensures that only authorized doctors can access the application, protecting sensitive patient information.
 
 ## Deployment
 
@@ -73,4 +68,4 @@ Contribute to the project by submitting bug reports, feature requests, or code c
 
 ## License
 
-This project is licensed under the [Your License] License - see the LICENSE.md file for details.
+This project is licensed under the Papa_Mazinga License - see the LICENSE.md file for details.
