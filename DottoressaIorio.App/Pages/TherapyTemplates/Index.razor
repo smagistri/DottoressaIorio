@@ -41,7 +41,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        therapyTemplates = await repository.GetAllAsync();
+        therapyTemplates = await repository.GetAllOrderedAsync();
     }
 
     private void NavigateToEdit(int id)

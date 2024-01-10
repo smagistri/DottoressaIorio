@@ -3,7 +3,6 @@ using DottoressaIorio.App.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DottoressaIorio.App.Services.Repositories;
-
 public class PatientRepository : GenericRepository<Patient>
 {
     private readonly ApplicationDbContext context;
@@ -13,14 +12,33 @@ public class PatientRepository : GenericRepository<Patient>
         this.context = context;
     }
 
-    public async Task<List<Patient>> GetFilteredPatientsAsync(string searchTerm)
+    private IQueryable<Patient> BaseQuery()
     {
-        return await context.Patients
-            .Where(p => !p.Deleted &&
-                        (p.FirstName.ToLower().Contains(searchTerm) ||
-                         p.LastName.ToLower().Contains(searchTerm)))
+        return context.Patients
+            .Where(p => !p.Deleted)
             .OrderBy(x => x.LastName)
-            .ThenBy(x => x.FirstName)
-            .ToListAsync();
+            .ThenBy(x => x.FirstName);
+    }
+
+    public async Task<IList<Patient>> GetAllOrderedAsync()
+    {
+        return await BaseQuery().ToListAsync();
+    }
+
+    public async Task<IList<Patient>> GetAllOrderedAsync(string searchTerm)
+    {
+        searchTerm = searchTerm?.ToLower();
+        var query = BaseQuery();
+
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            query = query.Where(p =>
+                p.FirstName.ToLower().Contains(searchTerm) ||
+                p.LastName.ToLower().Contains(searchTerm) ||
+                p.Email.ToLower().Contains(searchTerm)
+            );
+        }
+
+        return await query.ToListAsync();
     }
 }

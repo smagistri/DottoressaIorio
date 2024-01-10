@@ -87,7 +87,7 @@ else
     protected override async Task OnParametersSetAsync()
     {
         patient = await patientRepository.GetByIdAsync(PatientId);
-        therapies = await repository.GetAllByPatientIdAsync(PatientId);
+        therapies = await repository.GetAllsync(PatientId);
     }
 
     private async Task PrintAsync(int id)

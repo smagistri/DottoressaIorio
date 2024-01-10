@@ -13,7 +13,7 @@ public class TherapyTemplateRepository : GenericRepository<TherapyTemplate>
         this.context = context;
     }
 
-    public override async Task<IList<TherapyTemplate>> GetAllAsync()
+    public async Task<IList<TherapyTemplate>> GetAllOrderedAsync()
     {
         return await context.TherapyTemplates
             .Where(x => !x.Deleted)

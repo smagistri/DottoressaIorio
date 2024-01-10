@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DottoressaIorio.App", "Dott
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{F6F1D482-CD93-4BDD-BC86-B7823E25CAF2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{3513F683-F25C-424D-B3CA-2155C25BEAA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DottoressaIorio.App.Repository.Tests", "DottoressaIorio.App.Repository.Tests\DottoressaIorio.App.Repository.Tests.csproj", "{EEBB64EE-9AC0-421C-933D-99A6FDC9C60D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +21,17 @@ Global
 		{B8F3AA86-8AC0-42E0-9D0A-2F7ED40B8FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8F3AA86-8AC0-42E0-9D0A-2F7ED40B8FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8F3AA86-8AC0-42E0-9D0A-2F7ED40B8FF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEBB64EE-9AC0-421C-933D-99A6FDC9C60D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEBB64EE-9AC0-421C-933D-99A6FDC9C60D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEBB64EE-9AC0-421C-933D-99A6FDC9C60D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEBB64EE-9AC0-421C-933D-99A6FDC9C60D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B8F3AA86-8AC0-42E0-9D0A-2F7ED40B8FF7} = {F6F1D482-CD93-4BDD-BC86-B7823E25CAF2}
+		{EEBB64EE-9AC0-421C-933D-99A6FDC9C60D} = {3513F683-F25C-424D-B3CA-2155C25BEAA4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CFAACA53-7824-4529-BB93-10234472B6E4}

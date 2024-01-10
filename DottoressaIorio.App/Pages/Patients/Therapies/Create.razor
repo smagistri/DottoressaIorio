@@ -42,7 +42,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        templates = await templateRepository.GetAllAsync();
+        templates = await templateRepository.GetAllOrderedAsync();
     }
 
     private async Task SaveAsync()

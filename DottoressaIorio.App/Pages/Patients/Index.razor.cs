@@ -22,7 +22,7 @@ public class PatientsBase : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        patients = await Repository.GetAllAsync();
+        patients = await Repository.GetAllOrderedAsync();
         await UpdateDisplayedPatients();
     }
 
@@ -35,15 +35,7 @@ public class PatientsBase : ComponentBase
 
     protected async Task FilterPatientsBySearchTermAsync()
     {
-        if (string.IsNullOrWhiteSpace(SearchTerm))
-        {
-            FilteredPatients = patients;
-        }
-        else
-        {
-            SearchTerm = SearchTerm.ToLower();
-            FilteredPatients = await Repository.GetFilteredPatientsAsync(SearchTerm);
-        }
+        FilteredPatients = await Repository.GetAllOrderedAsync(SearchTerm);
     }
 
     protected async Task SearchPatients(ChangeEventArgs e)

@@ -13,11 +13,12 @@ public class PatientTherapyRepository : GenericRepository<Therapy>
         this.context = context;
     }
 
-    public async Task<IList<Therapy>> GetAllByPatientIdAsync(int patientId)
+    public async Task<IList<Therapy>> GetAllsync(int patientId)
     {
         return await context.Therapies
             .Include(x => x.Patient)
             .Where(t => !t.Deleted && t.PatientId == patientId)
+            .OrderBy(t => t.CreatedDate)
             .ToListAsync();
     }
 }
