@@ -11,7 +11,7 @@ The Medical Management App is a Blazor Web Application designed for individual d
 - [Usage](#usage)
 - [Database](#database)
 - [File Storage](#file-storage)
-- [Deployment](#deployment)
+- [Deployment](#deployment-steps)
 - [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
@@ -41,9 +41,8 @@ The Medical Management App enables individual doctors to manage patient records,
 
 ## Usage
 
-1. Log in with doctor credentials.
-2. Manage patients, therapies, and file attachments through the user interface.
-3. Ensure patient data is accurately entered, and PDF files are appropriately attached.
+1. Manage patients, therapies, and therapy templates through the user interface.
+2. Ensure patient data is accurately entered, and PDF files are appropriately attached.
 
 ## Database
 
@@ -53,18 +52,44 @@ The application uses a local SQLite database. Database setup, including schema a
 
 PDF files are generated and downloaded locally on the doctor's computer. The application manages the linking of patient records to their respective files.
 
+## Deployment Steps
 
-## Deployment
+### 1. Build and Publish the Application
 
-Deploy the application to the doctor's computer for local use.
+1. Open the application solution in Visual Studio.
+2. Build the solution to ensure all dependencies are resolved.
+3. Use Visual Studio Publish Profiler to publish the application.
 
+### 2. Create Service Archive
+
+1. Navigate to the `setup/installer` directory.
+2. Run `archive.bat` to create the `Service.zip` file containing the necessary files for installation.
+
+### 3. Install the Windows Service
+
+1. Run `install.bat` to install the application as a Windows service.
+   
+### 4. Set Up Task Scheduler for Database Backup
+
+1. Open Task Scheduler on the doctor's computer.
+2. Create a new task to schedule database backups.
+3. Configure the task to run at specified intervals.
+   - Set the action to run a batch script or executable that triggers the database backup process.
+
+**Example Batch Script for Database Backup:**
+
+```batch
+REM Replace placeholders with actual paths and commands
+-ExecutionPolicy Bypass -File "C:\path\to\your\backup_script.ps1"
+```
+See also: https://chat.openai.com/share/f6f0854a-aecb-43c7-aff6-d5e35711ac9b
 ## Testing
 
 Thoroughly test the application to ensure it meets the specified requirements. Include unit tests and integration tests as needed.
 
 ## Contributing
 
-Contribute to the project by submitting bug reports, feature requests, or code contributions. Follow the guidelines outlined in the CONTRIBUTING.md file.
+Contribute to the project by submitting bug reports, feature requests, or code contributions. Follow the guidelines outlined in the CONTRIBUTING.md file. 
 
 ## License
 
