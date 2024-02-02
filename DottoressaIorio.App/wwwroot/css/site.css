@@ -3,8 +3,9 @@ body {
 }
 
 textarea {
-    height: 400px;
+    height: calc(50vh - 30px); /* Adjust the values as needed */
 }
+
 
 .needs-validation label {
     margin: 10px 0
