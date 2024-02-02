@@ -44,6 +44,10 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+
+    // If not in development, listen on all interfaces
+    app.Urls.Add("http://0.0.0.0:5000");  // For IPv4
+    // app.Urls.Add("http://[::]:5000");  // For IPv6
 }
 
 app.UseHttpsRedirection();
