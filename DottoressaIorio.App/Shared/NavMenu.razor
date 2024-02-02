@@ -5,29 +5,29 @@
     <div class="position-sticky p-3">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <NavLink class="nav-link" aria-current="page" href="" Match="NavLinkMatch.All">
+                <NavLink class="nav-link" aria-current="page" href="" Match="NavLinkMatch.All" @onclick="CloseSidebar">
                     <span data-feather="home"></span> Home
                 </NavLink>
             </li>
             <li class="border-top my-1"></li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="patients">
+                <NavLink class="nav-link" href="patients" @onclick="CloseSidebar">
                     <span data-feather="users"></span> Pazienti
                 </NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="create-patient">
+                <NavLink class="nav-link" href="create-patient" @onclick="CloseSidebar">
                     <span data-feather="plus-circle" aria-hidden="true"></span> Aggiungi Paziente
                 </NavLink>
             </li>
             <li class="border-top my-1"></li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="therapy-templates">
+                <NavLink class="nav-link" href="therapy-templates" @onclick="CloseSidebar">
                     <span data-feather="layers"></span> Terapie Precompilate
                 </NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="create-therapy-template">
+                <NavLink class="nav-link" href="create-therapy-template" @onclick="CloseSidebar">
                     <span data-feather="plus-circle" aria-hidden="true"></span> Aggiungi Precompilato
                 </NavLink>
             </li>
@@ -39,6 +39,11 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await jsRuntime.InvokeVoidAsync("jsLoadFeather");
+    }
+
+    private async Task CloseSidebar()
+    {
+        await jsRuntime.InvokeVoidAsync("jsCloseNavbar");
     }
 }
 

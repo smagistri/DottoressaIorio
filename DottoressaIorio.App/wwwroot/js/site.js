@@ -11,3 +11,10 @@ window.jsSaveAsFile = (filename, byteBase64) => {
     link.click();
     document.body.removeChild(link);
 }
+
+window.jsCloseNavbar = () => {
+    // Close the navbar using the Collapse API
+    var sidebar = document.getElementById('sidebarMenu');
+    var bootstrapCollapse = new bootstrap.Collapse(sidebar);
+    bootstrapCollapse.hide();
+}
