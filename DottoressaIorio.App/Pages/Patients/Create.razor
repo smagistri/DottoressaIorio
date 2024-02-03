@@ -12,28 +12,28 @@
     <div class="row g-3">
         <div class="col-12">
             <label>Nome:*</label>
-            <input class="form-control" @bind="model.FirstName" />
+            <input type="text" class="form-control" @bind="model.FirstName" autocomplete="off" />
             <ValidationMessage For="@(() => model.FirstName)" />
         </div>
     </div>
     <div class="row g-3">
         <div class="col-12">
             <label>Cognome:*</label>
-            <input class="form-control" @bind="model.LastName" />
+            <input type="text" class="form-control" @bind="model.LastName" autocomplete="off">
             <ValidationMessage For="@(() => model.LastName)" />
         </div>
     </div>
     <div class="row g-3">
         <div class="col-12">
             <label>Data di Nascita (es: 31/12/1979):*</label>
-            <input type="date" class="form-control" @bind="model.DateOfBirth" />
+            <input type="date" class="form-control" @bind="model.DateOfBirth" autocomplete="off" />
             <ValidationMessage For="@(() => model.DateOfBirth)" />
         </div>
     </div>
     <div class="row g-3">
         <div class="col-12">
             <label>Indirizzo email:*</label>
-            <input type="email" class="form-control" @bind="model.Email" placeholder="name@example.com" />
+            <input type="email" class="form-control" @bind="model.Email" placeholder="name@example.com" autocomplete="off" />
             <ValidationMessage For="@(() => model.Email)" />
         </div>
     </div>

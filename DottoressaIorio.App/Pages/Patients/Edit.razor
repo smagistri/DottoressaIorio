@@ -34,14 +34,14 @@ else
         <div class="row g-3">
             <div class="col-12">
                 <label>Nome:*</label>
-                <InputText id="FirstName" @bind-Value="model.FirstName" class="form-control" />
+                <InputText id="FirstName" @bind-Value="model.FirstName" class="form-control" autocomplete="off" />
                 <ValidationMessage For="@(() => model.FirstName)" />
             </div>
         </div>
         <div class="row g-3">
             <div class="col-12">
                 <label>Cognome:*</label>
-                <InputText id="LastName" @bind-Value="model.LastName" class="form-control" />
+                <InputText id="LastName" @bind-Value="model.LastName" class="form-control" autocomplete="off" />
                 <ValidationMessage For="@(() => model.LastName)" />
             </div>
         </div>
@@ -55,7 +55,7 @@ else
         <div class="row g-3">
             <div class="col-12">
                 <label>Luogo di Nascita:*</label>
-                <InputText id="PlaceOfBirth" @bind-Value="model.PlaceOfBirth" class="form-control" />
+                <InputText id="PlaceOfBirth" @bind-Value="model.PlaceOfBirth" class="form-control" autocomplete="off" />
             </div>
         </div>
         <div class="row g-3">
