@@ -84,6 +84,7 @@ else
             <div class="col-12">
                 <label>Numero di telefono:</label>
                 <input type="tel" class="form-control" @bind="model.PhoneNumber">
+                <ValidationMessage For="@(() => model.PhoneNumber)" />
             </div>
         </div>
 
