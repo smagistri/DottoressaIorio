@@ -1,3 +1,4 @@
+
 set "sourceFile=Service.7z"
 set "destinationFolder=C:\Program Files\DottoressaIorio\"
 set "service=DottoressaIorio.App"
@@ -12,3 +13,4 @@ nssm install %service% "%destinationFolder%\%app%"
 nssm start %service%
 
 start http://localhost:5000
+pause

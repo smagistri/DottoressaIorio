@@ -5,3 +5,4 @@ set "service=DottoressaIorio.App"
 nssm stop %service%
 nssm remove %service% confirm
 rmdir /s /q "%destinationFolder%"
+pause

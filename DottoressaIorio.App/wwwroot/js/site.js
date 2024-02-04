@@ -15,6 +15,8 @@ window.jsSaveAsFile = (filename, byteBase64) => {
 window.jsCloseNavbar = () => {
     // Close the navbar using the Collapse API
     var sidebar = document.getElementById('sidebarMenu');
-    var bootstrapCollapse = new bootstrap.Collapse(sidebar);
-    bootstrapCollapse.hide();
+    if (sidebar.classList.contains('show')) {
+        var bootstrapCollapse = new bootstrap.Collapse(sidebar);
+        bootstrapCollapse.hide();
+    }
 }
