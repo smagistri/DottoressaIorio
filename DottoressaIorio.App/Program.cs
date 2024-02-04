@@ -3,10 +3,23 @@ using DinkToPdf;
 using DottoressaIorio.App.Data;
 using DottoressaIorio.App.Services;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using DottoressaIorio.App.Services.Repositories;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure Serilog for logging to a file
+builder.Logging.ClearProviders();
+Log.Logger = new LoggerConfiguration()
+    //.MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs/DottoressaIorio.App.log", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+// Use Serilog for logging
+builder.Host.UseSerilog();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -25,6 +38,7 @@ builder.Services.AddScoped<PatientRepository>();
 builder.Services.AddScoped<PdfService>();
 
 var app = builder.Build();
+
 
 using (var scope = app.Services.CreateScope())
 {
