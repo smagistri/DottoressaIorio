@@ -22,8 +22,7 @@ nssm stop %service%
 rem Remove the service using NSSM (confirming the removal)
 nssm remove %service% confirm
 
+cd /d "%~dp0"
+
 rem Remove the installation directory and its contents
 rmdir /s /q "%destinationFolder%"
-
-rem Pause to keep the console window open for viewing any output
-pause
