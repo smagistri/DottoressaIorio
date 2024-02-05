@@ -26,3 +26,5 @@ cd /d "%~dp0"
 
 rem Remove the installation directory and its contents
 rmdir /s /q "%destinationFolder%"
+
+pause
