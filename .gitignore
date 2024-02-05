@@ -401,3 +401,5 @@ FodyWeavers.xsd
 /DottoressaIorio.App/app.db
 /Setup/Installer/Service.7z
 /Setup/Service
+/Setup/Installer.zip
+/Setup/Installer/nssm.exe

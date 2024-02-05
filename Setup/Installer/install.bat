@@ -28,24 +28,11 @@ if not exist "%destinationFolder%" mkdir "%destinationFolder%"
 rem Extract files from the 7z archive to the destination folder
 7z x %sourceFile% -o"%destinationFolder%" *.* -r -y
 
-rem Check if .NET Core runtime is installed using winget
-winget list -e | find "Microsoft.DotNet.Runtime.6" > nul
+echo Installing .NET 6 Runtime using winget...
+echo y | winget install Microsoft.DotNet.Runtime.6
 
-if %errorlevel% neq 0 (
-    rem .NET Runtime is not installed, install it
-    echo Installing .NET 6 Runtime using winget...
-    winget install Microsoft.DotNet.Runtime.6
-)
-
-rem Check if .NET Core runtime is installed using winget
-winget list -e | find "Microsoft.DotNet.AspNetCore.6" > nul
-
-if %errorlevel% neq 0 (
-    rem .NET Core runtime is not installed, install it
-    echo Installing .NET 6 AspNetCore using winget...
-    winget install Microsoft.DotNet.AspNetCore.6
-)
-
+echo Installing .NET 6 AspNetCore using winget...
+echo y | winget install Microsoft.DotNet.AspNetCore.6
 
 rem Navigate to the destination folder
 cd "%destinationFolder%"
@@ -55,7 +42,7 @@ nssm install %service% "%destinationFolder%\%app%"
 
 rem Start the installed service using NSSM
 nssm start %service%
-
+ 
 rem Open the default browser to the application's URL
 start http://localhost:5000
 
