@@ -8,7 +8,7 @@ rem Publish the .NET Core application to the destination folder
 dotnet publish -c Release -o %destinationFolder%
 
 rem Copy utility files to the destination folder
-copy .\_utility\*.* %destinationFolder%
+copy ..\Utility\*.* %destinationFolder%
 
 rem Navigate to the Installer folder
 cd ..\Setup
