@@ -25,7 +25,7 @@ public class PatientRepository : GenericRepository<Patient>
         return await BaseQuery().ToListAsync();
     }
 
-    public async Task<IList<Patient>> GetAllOrderedAsync(string searchTerm)
+    public async Task<IList<Patient>> SearchPatientsAsync(string searchTerm)
     {
         searchTerm = searchTerm?.ToLower();
         var query = BaseQuery();
@@ -40,5 +40,13 @@ public class PatientRepository : GenericRepository<Patient>
         }
 
         return await query.ToListAsync();
+    }
+
+    public async Task<bool> PatientExistsAsync(Patient patient)
+    {
+        var query = await GetAllOrderedAsync();
+        return query.Any(p => p.FirstName.Equals(patient.FirstName, StringComparison.InvariantCultureIgnoreCase) &&
+                                        p.LastName.Equals(patient.LastName, StringComparison.InvariantCultureIgnoreCase) &
+                                        p.DateOfBirth == patient.DateOfBirth);
     }
 }

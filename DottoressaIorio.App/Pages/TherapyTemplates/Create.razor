@@ -6,8 +6,14 @@
 <h1>Aggiungi Terapia Precompilata</h1>
 <hr class="my-4">
 
-<EditForm Model="@model" OnValidSubmit="@SaveTask" class="needs-validation" novalidate>
+<EditForm Model="@model" OnValidSubmit="@SaveAsync" class="needs-validation" novalidate>
     <DataAnnotationsValidator />
+    @if (!string.IsNullOrEmpty(warningMessage))
+    {
+        <div class="alert alert-warning" role="alert">
+            @warningMessage
+        </div>
+    }
     <div class="row g-3">
         <div class="col-12">
             <label for="Title" class="form-label">Titolo</label>
@@ -27,10 +33,19 @@
 </EditForm>
 
 @code {
-    private TherapyTemplate model = new();
+    private readonly TherapyTemplate model = new();
+    private string warningMessage = "";
 
-    private async Task SaveTask()
+    private async Task SaveAsync()
     {
+        // Check if the title already exists
+        if (string.IsNullOrEmpty(warningMessage) && await repository.TitleExistsAsync(model.Title))
+        {
+            warningMessage = "Il titolo giá esiste. Sei sicura di voler continuare?";
+            return;
+        }
+
+        // If title doesn't exist, proceed with saving
         await repository.AddAsync(model);
         navigationManager.NavigateTo("/therapy-templates");
     }

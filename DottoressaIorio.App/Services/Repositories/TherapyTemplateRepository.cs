@@ -1,4 +1,5 @@
-﻿using DottoressaIorio.App.Data;
+﻿using System.Xml.Serialization;
+using DottoressaIorio.App.Data;
 using DottoressaIorio.App.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,5 +20,11 @@ public class TherapyTemplateRepository : GenericRepository<TherapyTemplate>
             .Where(x => !x.Deleted)
             .OrderBy(x => x.Title)
             .ToListAsync();
+    }
+
+    public async Task<bool> TitleExistsAsync(string title)
+    {
+        return await context.TherapyTemplates
+            .AnyAsync(x => x.Title == title && !x.Deleted);
     }
 }

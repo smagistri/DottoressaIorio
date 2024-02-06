@@ -35,7 +35,7 @@ public class PatientsBase : ComponentBase
 
     protected async Task FilterPatientsBySearchTermAsync()
     {
-        FilteredPatients = await Repository.GetAllOrderedAsync(SearchTerm);
+        FilteredPatients = await Repository.SearchPatientsAsync(SearchTerm);
     }
 
     protected async Task SearchPatients(ChangeEventArgs e)

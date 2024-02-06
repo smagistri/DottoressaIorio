@@ -8,7 +8,12 @@
 
 <EditForm Model="@model" OnValidSubmit="@SaveAsync" class="needs-validation" novalidate>
     <DataAnnotationsValidator />
-
+    @if (!string.IsNullOrEmpty(warningMessage))
+    {
+        <div class="alert alert-warning" role="alert">
+            @warningMessage
+        </div>
+    }
     <div class="row g-3">
         <div class="col-12">
             <label>Nome:*</label>
@@ -43,9 +48,17 @@
 
 @code {
     private readonly Patient model = new();
+    private string warningMessage = "";
 
     private async Task SaveAsync()
     {
+        // Check if the title already exists
+        if (string.IsNullOrEmpty(warningMessage) && await repository.PatientExistsAsync(model))
+        {
+            warningMessage = "Il paziente giá esiste. Sei sicura di voler continuare?";
+            return;
+        }
+
         await repository.AddAsync(model); 
         navigationManager.NavigateTo($"/patient/{model.PatientId}/therapies");
     }

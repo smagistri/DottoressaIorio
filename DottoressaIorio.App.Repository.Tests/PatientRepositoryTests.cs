@@ -32,7 +32,7 @@ public class PatientRepositoryTests
         }
     };
 
-    private async Task<IList<Patient>> GetAllOrderedAsync(string searchTerm = null)
+    private async Task<IList<Patient>> SearchPatientsAsync(string searchTerm = null)
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase("PatientListDatabase")
@@ -43,7 +43,7 @@ public class PatientRepositoryTests
         await context.SaveChangesAsync();
 
         var repository = new PatientRepository(context);
-        var result = await repository.GetAllOrderedAsync(searchTerm);
+        var result = await repository.SearchPatientsAsync(searchTerm);
 
         await context.Database.EnsureDeletedAsync();
         return result;
@@ -57,7 +57,7 @@ public class PatientRepositoryTests
     [InlineData("jane", 1)]
     public async Task GetAllOrderedAsync_ShouldReturnExpectedResults(string searchTerm, int expectedCount)
     {
-        var result = await GetAllOrderedAsync(searchTerm);
+        var result = await SearchPatientsAsync(searchTerm);
         Assert.Equal(expectedCount, result.Count);
     }
 }
