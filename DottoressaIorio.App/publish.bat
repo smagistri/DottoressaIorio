@@ -10,6 +10,9 @@ dotnet publish -c Release -o %destinationFolder%
 rem Copy utility files to the destination folder
 copy ..\Utility\*.* %destinationFolder%
 
+:: Create a directory named "db_backup" inside the destinationFolder
+mkdir %destinationFolder%\_db_backup
+
 rem Navigate to the Installer folder
 cd ..\Setup
 

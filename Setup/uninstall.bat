@@ -16,15 +16,27 @@ set "destinationFolder=C:\Program Files\DottoressaIorio\"
 set "service=DottoressaIorio.App"
 
 cd %destinationFolder%
+
 rem Stop the service using NSSM
 nssm stop %service%
 
 rem Remove the service using NSSM (confirming the removal)
 nssm remove %service% confirm
 
-cd /d "%~dp0"
+rem Remove all files and subdirectories in the installation directory except db_backup
+for /D %%i in (*) do (
+    if /I "%%i" neq "_db_backup" (
+        rmdir /s /q "%%i"
+    )
+)
 
-rem Remove the installation directory and its contents
-rmdir /s /q "%destinationFolder%"
+rem Remove all files in the installation directory except db_backup
+for %%i in (*) do (
+    if /I "%%i" neq "_db_backup" (
+        del /q "%%i"
+    )
+)
+
+cd /d "%~dp0"
 
 pause
