@@ -27,20 +27,28 @@ public class PatientRepository : GenericRepository<Patient>
 
     public async Task<IList<Patient>> SearchPatientsAsync(string searchTerm)
     {
-        searchTerm = searchTerm?.ToLower();
+        if (string.IsNullOrEmpty(searchTerm))
+        {
+            return await BaseQuery().ToListAsync();
+        }
+
+        searchTerm = searchTerm.ToLower();
+        var names = searchTerm.Split(' ');
+
         var query = BaseQuery();
 
-        if (!string.IsNullOrEmpty(searchTerm))
+        foreach (var name in names)
         {
             query = query.Where(p =>
-                p.FirstName.ToLower().Contains(searchTerm) ||
-                p.LastName.ToLower().Contains(searchTerm) ||
-                p.Email.ToLower().Contains(searchTerm)
+                p.FirstName.ToLower().Contains(name) ||
+                p.LastName.ToLower().Contains(name) ||
+                (p.FirstName.ToLower() + " " + p.LastName.ToLower()).Contains(searchTerm)
             );
         }
 
         return await query.ToListAsync();
     }
+
 
     public async Task<bool> PatientExistsAsync(Patient patient)
     {

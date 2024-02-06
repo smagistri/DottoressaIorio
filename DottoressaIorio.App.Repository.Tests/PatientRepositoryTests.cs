@@ -32,6 +32,21 @@ public class PatientRepositoryTests
         }
     };
 
+
+    [Theory]
+    [InlineData("John", 1)]
+    [InlineData(null, 2)]
+    [InlineData("NonExistent", 0)]
+    [InlineData("Deleted", 0)]
+    [InlineData("jane", 1)]
+    [InlineData("jane smith", 1)]
+    [InlineData("smith jane", 1)]
+    public async Task GetAllOrderedAsync_ShouldReturnExpectedResults(string searchTerm, int expectedCount)
+    {
+        var result = await SearchPatientsAsync(searchTerm);
+        Assert.Equal(expectedCount, result.Count);
+    }
+
     private async Task<IList<Patient>> SearchPatientsAsync(string searchTerm = null)
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -47,17 +62,5 @@ public class PatientRepositoryTests
 
         await context.Database.EnsureDeletedAsync();
         return result;
-    }
-
-    [Theory]
-    [InlineData("John", 1)]
-    [InlineData(null, 2)]
-    [InlineData("NonExistent", 0)]
-    [InlineData("Deleted", 0)]
-    [InlineData("jane", 1)]
-    public async Task GetAllOrderedAsync_ShouldReturnExpectedResults(string searchTerm, int expectedCount)
-    {
-        var result = await SearchPatientsAsync(searchTerm);
-        Assert.Equal(expectedCount, result.Count);
     }
 }
