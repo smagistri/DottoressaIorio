@@ -1,11 +1,10 @@
-using DinkToPdf.Contracts;
 using DinkToPdf;
+using DinkToPdf.Contracts;
 using DottoressaIorio.App.Data;
 using DottoressaIorio.App.Services;
+using DottoressaIorio.App.Services.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using DottoressaIorio.App.Services.Repositories;
-using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,10 +45,8 @@ using (var scope = app.Services.CreateScope())
     var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
 
     if (!dbContext.Database.IsRelational() || !dbContext.Database.CanConnect())
-    {
         // SQLite file doesn't exist or cannot connect, run migration
         dbContext.Database.Migrate();
-    }
 }
 
 // Configure the HTTP request pipeline.

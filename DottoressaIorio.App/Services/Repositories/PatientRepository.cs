@@ -3,6 +3,7 @@ using DottoressaIorio.App.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DottoressaIorio.App.Services.Repositories;
+
 public class PatientRepository : GenericRepository<Patient>
 {
     private readonly ApplicationDbContext context;
@@ -27,24 +28,17 @@ public class PatientRepository : GenericRepository<Patient>
 
     public async Task<IList<Patient>> SearchPatientsAsync(string searchTerm)
     {
-        if (string.IsNullOrEmpty(searchTerm))
-        {
-            return await BaseQuery().ToListAsync();
-        }
+        if (string.IsNullOrEmpty(searchTerm)) return await BaseQuery().ToListAsync();
 
         searchTerm = searchTerm.ToLower();
         var names = searchTerm.Split(' ');
 
         var query = BaseQuery();
 
-        foreach (var name in names)
-        {
-            query = query.Where(p =>
-                p.FirstName.ToLower().Contains(name) ||
-                p.LastName.ToLower().Contains(name) ||
-                (p.FirstName.ToLower() + " " + p.LastName.ToLower()).Contains(searchTerm)
-            );
-        }
+        query = names.Aggregate(query,
+            (current, name) => current.Where(p =>
+                p.FirstName.ToLower().Contains(name) || p.LastName.ToLower().Contains(name) ||
+                (p.FirstName.ToLower() + " " + p.LastName.ToLower()).Contains(searchTerm)));
 
         return await query.ToListAsync();
     }
@@ -54,7 +48,7 @@ public class PatientRepository : GenericRepository<Patient>
     {
         var query = await GetAllOrderedAsync();
         return query.Any(p => p.FirstName.Equals(patient.FirstName, StringComparison.InvariantCultureIgnoreCase) &&
-                                        p.LastName.Equals(patient.LastName, StringComparison.InvariantCultureIgnoreCase) &
-                                        p.DateOfBirth == patient.DateOfBirth);
+                              p.LastName.Equals(patient.LastName, StringComparison.InvariantCultureIgnoreCase) &
+                              (p.DateOfBirth == patient.DateOfBirth));
     }
 }

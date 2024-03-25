@@ -1,5 +1,4 @@
-﻿using System.Xml.Serialization;
-using DottoressaIorio.App.Data;
+﻿using DottoressaIorio.App.Data;
 using DottoressaIorio.App.Models;
 using Microsoft.EntityFrameworkCore;
 
